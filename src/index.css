@@ -1,0 +1,23 @@
+:root {
+  --primary: #d8a25e;
+  --secondary: #a04747;
+  --bg: #0a0a0a;
+  --light: #eedf7a;
+  --light-white: #f6f6f6;
+  --card: #646464;
+  --card-dark: #343131;
+  --text: #bcbcbc;
+  --primary-button: linear-gradient(137deg, #d8a25e, #a04747);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  outline: none;
+  border: none;
+}
+body {
+  background: var(--bg);
+}

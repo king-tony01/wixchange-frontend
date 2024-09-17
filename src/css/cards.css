@@ -1,0 +1,62 @@
+@media (max-width: 500px) {
+  a {
+    text-decoration: none;
+  }
+
+  .card img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .card p {
+    color: var(--light-white);
+    font-size: 14px;
+  }
+
+  .card b {
+    color: var(--light);
+    font-size: 18px;
+  }
+
+  .card small:not(.discount) {
+    color: var(--text);
+    display: block;
+    font-size: 12px;
+  }
+
+  .card div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .discount {
+    padding: 2px 5px;
+    color: #00ab44;
+    background: #95fcbe;
+    border-radius: 10px;
+    display: block;
+    font-size: 10px;
+  }
+
+  .vtu-card {
+    padding: 10px;
+    background: var(--card-dark);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .vtu-card small {
+    display: block;
+    color: var(--text);
+  }
+
+  .vtu-card b {
+    color: var(--light-white);
+    display: block;
+  }
+}
