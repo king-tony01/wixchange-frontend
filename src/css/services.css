@@ -1,0 +1,305 @@
+@media (max-width: 500px) {
+  .services {
+    position: relative;
+    height: 85vh;
+    overflow-y: auto;
+  }
+
+  .services h1 {
+    position: sticky;
+    top: 0;
+    left: 0;
+    padding: 15px;
+    background: var(--bg);
+  }
+
+  .services .service-card {
+    padding: 15px;
+    display: block;
+    background: var(--card-dark);
+    margin: 10px;
+    border-radius: 10px;
+  }
+
+  .service-card div {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+  }
+
+  .service-card .service-icon {
+    width: 30px;
+  }
+
+  .service-card b {
+    color: var(--light-white);
+    display: block;
+  }
+
+  .service-card small {
+    color: var(--text);
+    display: block;
+  }
+
+  .vtu-services {
+    position: relative;
+  }
+
+  .vtu-services-header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    left: 0;
+    gap: 15px;
+  }
+
+  .vtu-services-header .back {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    color: var(--light-white);
+    background: none;
+    border: none;
+  }
+
+  .inner-vtu {
+    padding: 10px;
+  }
+
+  .main-button {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .main-button button {
+    background: var(--card-dark);
+    color: var(--light-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-size: 16px;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .main-button button img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+
+  .main-button .active {
+    background: #918e7e;
+  }
+
+  .number {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin: 10px auto;
+    background: var(--card-dark);
+    border-radius: 10px;
+    width: 100%;
+  }
+
+  .networks {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: var(--card-dark);
+    border-radius: 10px;
+    display: none;
+  }
+
+  .networks.active {
+    display: block;
+  }
+
+  .networks button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    font-weight: 600;
+    color: var(--text);
+    padding: 10px;
+  }
+
+  .networks img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .network-wrapper {
+    position: relative;
+  }
+
+  .change-network {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text);
+    position: relative;
+    padding-right: 5px;
+    border-right: 1px solid var(--card);
+  }
+
+  .change-network img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .number input {
+    display: block;
+    color: var(--light-white);
+    width: 100%;
+    padding: 0 10px;
+    border: none;
+    background: none;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .number .open-contact {
+    background: none;
+    border: none;
+    width: 20px;
+    height: 20px;
+    color: var(--primary);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .loan-container {
+    padding: 15px;
+    background: #1a1919;
+    border-radius: 10px;
+    margin: 10px 0;
+  }
+
+  .loan-container p {
+    color: var(--light-white);
+  }
+
+  .loan-container small {
+    display: block;
+    color: var(--text);
+    margin: 5px 0;
+  }
+
+  .loan-container button {
+    border: none;
+    display: block;
+    font-size: 16px;
+    color: var(--light-white);
+    padding: 5px 20px;
+    border-radius: 20px;
+    background: var(--primary-button);
+  }
+
+  .data-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .data-header {
+    display: flex;
+    margin: 10px 0;
+    overflow-x: auto;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .data-header span {
+    color: var(--text);
+    white-space: nowrap;
+    padding: 5px 0;
+    position: relative;
+    display: block;
+  }
+
+  .data-header .active {
+    color: var(--primary);
+  }
+
+  .data-header span::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 3px;
+    border-radius: 10px;
+    background: var(--primary);
+    left: 0;
+    bottom: 0;
+    display: none;
+  }
+
+  .data-header .active::after {
+    display: block;
+  }
+
+  .data-card {
+    padding: 15px;
+    background: var(--card-dark);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .data-card b {
+    color: var(--light-white);
+    display: block;
+  }
+
+  .data-card small {
+    display: block;
+    color: var(--text);
+    margin: 5px 0;
+  }
+
+  .airtime input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: var(--card-dark);
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--light-white);
+  }
+
+  .continue-btn {
+    display: block;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--light-white);
+    border: none;
+    width: 100%;
+    border-radius: 10px;
+    background: var(--primary-button);
+    margin: 10px 0;
+  }
+}

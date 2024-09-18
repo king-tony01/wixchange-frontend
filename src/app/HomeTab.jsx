@@ -5,6 +5,7 @@ import cart from "/src/assets/cart.png";
 import bell from "/src/assets/bell.png";
 import "/src/css/hometab.css";
 import "/src/css/cards.css";
+import "/src/css/services.css";
 import WalletCard from "./WalletCard";
 import QuickActions from "./QuickActions";
 import CardsList from "./CardsList";
@@ -12,7 +13,7 @@ import Grid from "./Grid";
 function HomeTab() {
   return (
     <section className="hometab">
-      <header>
+      <header className="home-header">
         <div className="header-left">
           <i className="fas fa-user-circle"></i>
           <div>

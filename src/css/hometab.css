@@ -1,11 +1,11 @@
 @media (max-width: 500px) {
   .hometab {
     height: 86vh;
-    padding: 15px;
+    padding: 0 10px;
     overflow-y: auto;
   }
 
-  header {
+  .home-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -15,6 +15,7 @@
     position: sticky;
     left: 0;
     top: 0;
+    padding: 10px;
   }
 
   .header-left {

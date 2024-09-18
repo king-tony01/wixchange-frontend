@@ -5,6 +5,8 @@ import Signup from "./auth/Signup";
 import Home from "./app/Home";
 import HomeTab from "./app/HomeTab";
 import WalletTab from "./app/WalletTab";
+import Services from "./app/Services";
+import VTUServices from "./app/VTUServices";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +27,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/services",
-            element: <div>Services</div>,
+            element: <Services />,
           },
           {
             path: "/menu",
@@ -40,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
+      },
+      {
+        path: "/services/vtu",
+        element: <VTUServices />,
       },
     ],
   },
