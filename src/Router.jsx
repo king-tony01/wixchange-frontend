@@ -7,6 +7,10 @@ import HomeTab from "./app/HomeTab";
 import WalletTab from "./app/WalletTab";
 import Services from "./app/Services";
 import VTUServices from "./app/VTUServices";
+import GiftCardsHome from "./app/GiftCardsHome";
+import GiftCardMarket from "./app/GiftCardMarket";
+import CardDetails from "./app/CardDetails";
+import Checkout from "./app/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +50,22 @@ const router = createBrowserRouter([
       {
         path: "/services/vtu",
         element: <VTUServices />,
+      },
+      {
+        path: "/services/gift-card",
+        element: <GiftCardsHome />,
+      },
+      {
+        path: "/services/gift-card/marketplace",
+        element: <GiftCardMarket />,
+      },
+      {
+        path: "/services/gift-card/details",
+        element: <CardDetails />,
+      },
+      {
+        path: "/services/gift-card/checkout",
+        element: <Checkout />,
       },
     ],
   },

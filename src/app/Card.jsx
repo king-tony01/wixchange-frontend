@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Card() {
+function Card({ card }) {
   return (
-    <Link>
+    <Link to={`/services/gift-card/details`}>
       <div className="card">
         <img
           src={
@@ -11,11 +11,26 @@ function Card() {
           }
           alt=""
         />
-        <p>Amazon Gift Card</p>
-        <b>$25.00</b>
+        <p>{card.name}</p>
+        <b>
+          {card.value.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}
+        </b>
         <div>
-          <small>At $20.00</small>
-          <small className="discount">20% OFF</small>
+          <small>
+            At{" "}
+            {card.price.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+            })}
+          </small>
+          {card.discount > 0 ? (
+            <small className="discount">
+              {Math.round((card.discount / card.price) * 100)}% OFF
+            </small>
+          ) : null}
         </div>
       </div>
     </Link>

@@ -6,7 +6,7 @@ function Grid({ list, type }) {
   return (
     <section className="grid">
       {type == "cards"
-        ? list.map((card, index) => <Card key={index + 1} />)
+        ? list.map((card, index) => <Card card={card} key={index + 1} />)
         : list.map((vtu, index) => <VTU type={"airtime"} key={index + 1} />)}
     </section>
   );

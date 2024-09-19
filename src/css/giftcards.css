@@ -1,0 +1,354 @@
+@media (max-width: 500px) {
+  .gift-card-home {
+    height: 100vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .gift-card-home-header,
+  .card-market-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg);
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+
+  .gift-card-home-header button,
+  .card-market-header button {
+    width: 20px;
+    height: 20px;
+    color: var(--light-white);
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gift-card-home-hero {
+    padding: 10px;
+    margin: 5px 0;
+  }
+
+  .gift-card-home-hero .sub-title {
+    color: var(--text);
+    margin: 5px 0;
+  }
+
+  .owned-cards {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: auto;
+    gap: 10px;
+  }
+
+  .card-prev-home {
+    width: 115px;
+  }
+
+  .card-prev-home img {
+    width: 100%;
+    display: block;
+    height: 130px;
+    object-fit: cover;
+  }
+
+  .card-prev-home p {
+    color: var(--light-white);
+    margin: 5px 0;
+  }
+
+  .card-prev-home small {
+    color: var(--text);
+  }
+
+  .action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .action-buttons a {
+    border-radius: 10px;
+    padding: 10px;
+    border: none;
+    color: var(--light-white);
+    display: block;
+    margin: 5px 0;
+    text-align: center;
+  }
+
+  .action-buttons a:nth-child(1) {
+    background: var(--primary);
+  }
+  .action-buttons a:nth-child(2) {
+    background: var(--secondary);
+  }
+
+  .history-header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 5px 0;
+  }
+
+  .history-header p {
+    color: var(--text);
+  }
+
+  .history-header a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .card-history {
+    padding: 0 10px;
+  }
+
+  .card-history ul li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+
+  .card-history ul li:not(:last-child) {
+    border-bottom: 1px solid var(--card-dark);
+  }
+
+  .card-history .left {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .card-history .left .icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--card-dark);
+  }
+
+  .card-history .left img {
+    display: block;
+    width: 15px;
+  }
+
+  .card-history .left b {
+    color: var(--light-white);
+    display: block;
+  }
+  .card-history .left small {
+    color: var(--text);
+    display: block;
+  }
+
+  .card-history .right small {
+    display: block;
+    text-align: right;
+    color: var(--text);
+  }
+
+  .card-history .right .status {
+    color: #ffa200;
+  }
+
+  .gift-card-market {
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .market-body {
+    padding: 15px;
+  }
+
+  .search-bar {
+    display: flex;
+    border-radius: 5px;
+    background: var(--card-dark);
+    align-items: center;
+  }
+
+  .search-bar img {
+    display: block;
+    width: 20px;
+    margin: 10px;
+  }
+
+  .search-bar input {
+    display: block;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--light-white);
+    padding: 7px;
+    border: none;
+    background: none;
+  }
+
+  .filter {
+    margin-top: 15px;
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .filter button {
+    padding: 5px 0;
+    background: none;
+    color: var(--text);
+    display: block;
+    position: relative;
+  }
+
+  .filter .active {
+    color: var(--primary);
+  }
+
+  .filter .active::after {
+    content: "";
+    width: 100%;
+    height: 3px;
+    border-radius: 10px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: var(--primary);
+  }
+
+  .card-details {
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .details-hero {
+    padding: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .details-hero img {
+    width: 160px;
+    height: 180px;
+    display: block;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .details-hero p {
+    color: var(--light-white);
+  }
+
+  .details-hero small {
+    display: block;
+    color: var(--text);
+    margin: 10px 0;
+  }
+
+  .details-hero small span {
+    color: var(--light-white);
+  }
+
+  .details-action {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 15px;
+    margin: 10px 0;
+  }
+
+  .details-action a {
+    text-decoration: none;
+    color: var(--light-white);
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 10px;
+    padding: 15px;
+  }
+
+  .details-action a:nth-child(1) {
+    background: var(--primary-button);
+  }
+
+  .details-action a:nth-child(2) {
+    background: #646464;
+  }
+
+  .seller-info {
+    padding: 15px;
+    margin: 10px 0;
+  }
+
+  .seller-info h4 {
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .seller-card {
+    padding: 10px;
+    border-radius: 10px;
+    background: #1a1919;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-top img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .card-top p {
+    color: var(--light-white);
+  }
+
+  .card-top .stars {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .card-top .fas {
+    color: var(--light);
+    display: inline-block;
+  }
+
+  .card-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .card-bottom small {
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .card-bottom small .fas {
+    color: var(--light);
+  }
+}

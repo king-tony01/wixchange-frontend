@@ -1,0 +1,106 @@
+@media (max-width: 500px) {
+  .checkout {
+    height: 100vh;
+    position: relative;
+  }
+
+  .checkout-body {
+    padding: 15px;
+  }
+
+  .checkout-body h4 {
+    color: var(--text);
+  }
+
+  .checkout-body ul li {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    gap: 10px;
+  }
+
+  .checkout-body ul li:not(:last-child) {
+    border-bottom: 1px solid var(--card-dark);
+  }
+
+  .checkout-body ul li img {
+    width: 50px;
+    height: 60px;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+
+  .checkout-body ul li div p {
+    color: var(--light-white);
+  }
+
+  .checkout-body ul li div {
+    width: 100%;
+  }
+
+  .checkout-body ul li div div {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .checkout-body ul li div div b {
+    color: var(--light);
+    display: block;
+  }
+
+  .checkout-body ul li div div small {
+    color: var(--text);
+    display: block;
+  }
+
+  .checkout-body ul li div div small span {
+    color: var(--light-white);
+  }
+
+  .total-cal small {
+    color: var(--text);
+    display: block;
+  }
+
+  .pay-btn {
+    background: var(--primary-button);
+    display: block;
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    border: none;
+    color: var(--light-white);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 20px 0;
+  }
+
+  .buyer-protection {
+    position: absolute;
+    bottom: 10px;
+    margin: 0 auto;
+    background: var(--card-dark);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 10px;
+    width: 93%;
+  }
+
+  .buyer-protection .fas {
+    color: var(--light);
+    font-size: 25px;
+  }
+
+  .buyer-protection p {
+    color: var(--light-white);
+  }
+
+  .buyer-protection small {
+    display: block;
+    color: var(--text);
+  }
+}

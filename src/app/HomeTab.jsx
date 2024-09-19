@@ -6,10 +6,12 @@ import bell from "/src/assets/bell.png";
 import "/src/css/hometab.css";
 import "/src/css/cards.css";
 import "/src/css/services.css";
+import "/src/css/giftcards.css";
 import WalletCard from "./WalletCard";
 import QuickActions from "./QuickActions";
 import CardsList from "./CardsList";
 import Grid from "./Grid";
+import { cards } from "../../test";
 function HomeTab() {
   return (
     <section className="hometab">
@@ -37,7 +39,7 @@ function HomeTab() {
       <WalletCard />
       <QuickActions />
       <h3>Top Selling Cards</h3>
-      <Grid list={[1, 2, 3]} type={"cards"} />
+      <Grid list={cards[0].data.slice(0, 3)} type={"cards"} />
       <h3>Quick Top-up</h3>
       <Grid list={[1, 2, 3]} type={"vtu"} />
     </section>
