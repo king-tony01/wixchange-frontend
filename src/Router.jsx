@@ -11,11 +11,14 @@ import GiftCardsHome from "./app/GiftCardsHome";
 import GiftCardMarket from "./app/GiftCardMarket";
 import CardDetails from "./app/CardDetails";
 import Checkout from "./app/Checkout";
+import NotFound from "./NotFound";
+import ListNewCard from "./app/ListNewCard";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <NotFound />,
     children: [
       {
         path: "/",
@@ -58,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "/services/gift-card/marketplace",
         element: <GiftCardMarket />,
+      },
+      {
+        path: "/services/gift-card/marketplace/list-new",
+        element: <ListNewCard />,
       },
       {
         path: "/services/gift-card/details",

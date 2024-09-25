@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "/src/css/auth.css";
+import { AuthContext } from "./AuthContext";
 
 function Login() {
   const [active, setActive] = useState(0);
@@ -25,6 +26,9 @@ function Login() {
   const updateCredential = (input) => {
     setUser({ ...user, credential: input });
   };
+
+  const { sendForm, loading, setLoading } = useContext(AuthContext);
+
   return (
     <section className="auth">
       <h1 className="auth-title">Login</h1>
@@ -70,7 +74,9 @@ function Login() {
         <small className="small-text">
           Don't have an account? <Link to={"/signup"}>Create one now</Link>
         </small>
-        <button className="action-btn">Login</button>
+        <button className="action-btn" onClick={(e) => sendForm(e, user)}>
+          {loading ? <span className="spinner"></span> : ` Login`}
+        </button>
       </form>
       <div className="company">
         <small>Powered By</small>

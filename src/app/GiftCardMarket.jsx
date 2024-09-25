@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import searchIcon from "/src/assets/search.png";
 import SectionList from "./SectionList";
 import { cards } from "../../test";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import EmptyList from "../EmptyList";
 function GiftCardMarket() {
   const [active, setActive] = useState(0);
   const [back, setBack] = useState(false);
@@ -47,7 +48,7 @@ function GiftCardMarket() {
             </button>
           ))}
         </div>
-        <SectionList list={cards} />
+        {cards.length > 0 ? <SectionList list={cards} /> : <EmptyList />}
       </div>
     </section>
   );

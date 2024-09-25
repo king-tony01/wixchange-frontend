@@ -1,9 +1,9 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-
+import bigScreen from "/src/assets/big-screen.png";
+import AuthProvider from "./auth/AuthContext";
 function App() {
   const [screen, setScreen] = useState(window.innerWidth);
-  console.log(screen);
   const updateWidth = () => {
     setScreen(window.innerWidth);
   };
@@ -43,12 +43,19 @@ function App() {
     };
   }, []);
   if (screen > 500) {
-    return <div>Please use a mobile phone</div>;
+    return (
+      <div className="big-screen">
+        <img src={bigScreen} alt="" />
+        <h1>Available only on Mobile!</h1>
+      </div>
+    );
   }
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Outlet></Outlet>
-    </Suspense>
+    <AuthProvider>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet></Outlet>
+      </Suspense>
+    </AuthProvider>
   );
 }
 

@@ -351,4 +351,134 @@
   .card-bottom small .fas {
     color: var(--light);
   }
+
+  .list-new .input-wrapper {
+    margin: 15px 0;
+    padding: 0 15px;
+    position: relative;
+  }
+
+  .list-new .input-wrapper.wrapper-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .list-new .input-wrapper p {
+    color: var(--light-white);
+    margin-bottom: 5px;
+  }
+
+  .list-new .input-wrapper input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    color: var(--light-white);
+    background: var(--card-dark);
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .agree-section {
+    margin: 10px 0;
+    padding: 0 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .agree-section .check-box {
+    min-width: 25px;
+    min-height: 25px;
+    width: 25px;
+    height: 25px;
+    border-radius: 3px;
+    border: 2px solid var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .agree-section .check-box input {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+
+  .agree-section .check-box span {
+    width: 100%;
+    height: 100%;
+    background: var(--primary);
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    position: relative;
+  }
+
+  .agree-section .check-box input:checked ~ span {
+    opacity: 1;
+  }
+
+  .agree-section .check-box span::before {
+    content: "";
+    position: absolute;
+    height: 5px;
+    width: 10px;
+    left: 3px;
+    top: 5px;
+    transform: rotate(-45deg);
+    border-left: 3px solid var(--light-white);
+    border-bottom: 3px solid var(--light-white);
+  }
+
+  .agree-section small {
+    color: var(--text);
+  }
+
+  .agree-section small a {
+    color: var(--primary);
+    text-decoration: underline;
+  }
+
+  .list-new .main-btn {
+    display: block;
+    text-align: center;
+    padding: 15px;
+    width: 93%;
+    color: var(--light-white);
+    border-radius: 10px;
+    background: var(--primary-button);
+    margin: 20px auto;
+  }
+
+  .brands-con {
+    position: absolute;
+    top: 100%;
+    left: 15px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    background: var(--card-dark);
+    border-radius: 10px;
+    z-index: 10;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+  }
+
+  .brands-con.active {
+    display: block;
+  }
+
+  .brands-con span {
+    display: block;
+    padding: 10px;
+    color: var(--light-white);
+  }
 }
