@@ -95,7 +95,8 @@ body {
   color: var(--light-white);
 }
 
-.empty-list {
+.empty-list,
+.empty-transactions {
   padding: 20px;
   display: flex;
   align-items: center;
@@ -111,10 +112,125 @@ body {
   width: 200px;
 }
 
-.empty-list h2 {
+.empty-transactions .fas {
+  font-size: 100px;
+  color: var(--card-dark);
+}
+
+.empty-list,
+.empty-transactions h2 {
   color: #343131;
 }
 
-.empty-list p {
+.empty-list,
+.empty-transactions p {
   color: #646464;
+}
+
+.error-modal {
+  position: fixed;
+  top: 0;
+  left: 2.5%;
+  width: 95%;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  transition: 0.5s ease-in;
+  opacity: 0;
+}
+
+.error-modal div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.error-modal.error {
+  background: rgb(251, 191, 191);
+  top: 20px;
+  opacity: 1;
+}
+
+.error-modal.error small {
+  color: rgb(159, 0, 0);
+  display: block;
+  margin-top: 5px;
+}
+
+.error-modal.error div {
+  color: red;
+}
+
+.error-modal.success {
+  background: rgb(191, 251, 201);
+  top: 20px;
+  opacity: 1;
+}
+
+.error-modal.success small {
+  color: rgb(0, 159, 88);
+  display: block;
+  margin-top: 5px;
+}
+
+.error-modal.success div {
+  color: rgb(0, 162, 62);
+}
+
+.error-modal.warning {
+  background: rgb(251, 247, 191);
+  top: 20px;
+  opacity: 1;
+}
+
+.error-modal.warning small {
+  color: rgb(212, 152, 1);
+  display: block;
+  margin-top: 5px;
+}
+
+.error-modal.warning div {
+  color: rgb(255, 196, 0);
+}
+
+.loading-page {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-page h1 {
+  color: var(--secondary);
+  animation: page-load 2s linear forwards infinite;
+}
+
+.loading-page h1 span {
+  color: var(--primary);
+}
+
+@keyframes page-load {
+  0% {
+    text-shadow: 0 0 0 transparent;
+  }
+  25% {
+    text-shadow: 0 0 5px green;
+  }
+
+  50% {
+    text-shadow: 0 0 10px rgb(128, 113, 0);
+    transform: scale(1.1);
+  }
+  75% {
+    text-shadow: 0 0 5px rgb(128, 0, 124);
+  }
+  75% {
+    text-shadow: 0 0 0 transparent;
+  }
 }

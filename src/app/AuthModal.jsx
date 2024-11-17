@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "/src/css/authmodal.css";
-const url = `https://wixchange-backend.onrender.com`;
 import { CheckoutContext } from "./Checkout";
+import { baseUrl } from "../assets/urls";
+import Spinner from "../Spinner";
 function AuthModal() {
   const { setOpen } = useContext(CheckoutContext);
   let [pinInput, setPinInput] = useState("");
   const [active, setActive] = useState(0);
+  const [sending, setSending] = useState(false);
   function updatePinInput(input) {
     if (pinInput.length == 4) return;
     setPinInput((pinInput += input));
@@ -21,9 +23,10 @@ function AuthModal() {
 
   useEffect(() => {
     if (pinInput.length == 4) {
+      setSending(true);
       const checkPin = async () => {
         try {
-          const response = await fetch(`${url}/api/pin/check`, {
+          const response = await fetch(`${baseUrl}/api/pin/check`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -33,9 +36,11 @@ function AuthModal() {
           if (response.ok) {
             const responseData = await response.json();
             console.log(responseData);
+            setSending(false);
           } else {
             const responseData = await response.json();
             console.log(responseData);
+            setSending(false);
           }
         } catch (err) {
           console.log(err.message);
@@ -52,49 +57,39 @@ function AuthModal() {
           <i className="fas fa-lock"></i>
           <p>Authorization</p>
         </div>
-        <i className="fas fa-close" onClick={() => setOpen(false)}></i>
+        <i
+          className="fas fa-close"
+          onClick={() => {
+            setSending(false);
+            setOpen(false);
+          }}
+        ></i>
         <small className="hint">
           Please enter your authorization PIN to authorize
         </small>
-        <div className="inputs">
-          {[0, 0, 0, 0].map((val, index) => (
-            <div className={`input ${index == active ? "active" : ""}`}>
-              {pinInput.split("")[index]}
-            </div>
-          ))}
-        </div>
+        {sending ? (
+          <div className="loader">
+            <Spinner />
+          </div>
+        ) : (
+          <div className="inputs">
+            {[0, 0, 0, 0].map((val, index) => (
+              <div className={`input ${index == active ? "active" : ""}`}>
+                {pinInput.split("")[index]}
+              </div>
+            ))}
+          </div>
+        )}
         <Link>Forgot your PIN?</Link>
         <div className="pads">
-          <button onClick={(e) => updatePinInput(e.target.textContent)}>
-            1
-          </button>
-          <button onClick={(e) => updatePinInput(e.target.textContent)}>
-            2
-          </button>
-          <button onClick={(e) => updatePinInput(e.target.textContent)}>
-            3
-          </button>
-          <button onClick={(e) => updatePinInput(e.target.textContent)}>
-            4
-          </button>
-          <button onClick={(e) => updatePinInput(e.target.textContent)}>
-            5
-          </button>
-          <button onClick={(e) => updatePinInput(e.target.textContent)}>
-            6
-          </button>
-          <button onClick={(e) => updatePinInput(e.target.textContent)}>
-            7
-          </button>
-          <button onClick={(e) => updatePinInput(e.target.textContent)}>
-            8
-          </button>
-          <button onClick={(e) => updatePinInput(e.target.textContent)}>
-            9
-          </button>
-          <button onClick={(e) => updatePinInput(e.target.textContent)}>
-            0
-          </button>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((pad, index) => (
+            <button
+              key={index}
+              onClick={(e) => updatePinInput(e.target.textContent)}
+            >
+              {pad}
+            </button>
+          ))}
           <button onClick={deleteOne}>
             <i className="fas fa-delete-left"></i>
           </button>

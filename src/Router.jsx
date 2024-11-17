@@ -13,6 +13,7 @@ import CardDetails from "./app/CardDetails";
 import Checkout from "./app/Checkout";
 import NotFound from "./NotFound";
 import ListNewCard from "./app/ListNewCard";
+import Menu from "./app/Menu";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/menu",
-            element: <div>Menu</div>,
+            element: <Menu />,
           },
         ],
       },

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import searchIcon from "/src/assets/search.png";
 import SectionList from "./SectionList";
+import { TopBarIcons } from "../assets/icons/topBarIcons";
 import { cards } from "../../test";
 import { Link, useNavigate } from "react-router-dom";
-import EmptyList from "../EmptyList";
+import EmptyList from "/src/app/components/EmptyList";
 function GiftCardMarket() {
   const [active, setActive] = useState(0);
   const [back, setBack] = useState(false);
@@ -25,19 +25,19 @@ function GiftCardMarket() {
     }
   }, [navigate, back]);
   return (
-    <section className="gift-card-market">
-      <header className="card-market-header">
+    <section className='gift-card-market'>
+      <header className='card-market-header'>
         <button onClick={() => setBack(true)}>
-          <i className="fas fa-chevron-left"></i>
+          <i className='fas fa-chevron-left'></i>
         </button>
         <h3>Buy a Gift Card</h3>
       </header>
-      <div className="market-body">
-        <div className="search-bar">
-          <img src={searchIcon} alt="" />
-          <input type="search" name="" id="" placeholder="Search brands" />
+      <div className='market-body'>
+        <div className='search-bar'>
+          {TopBarIcons.search}
+          <input type='search' name='' id='' placeholder='Search brands' />
         </div>
-        <div className="filter">
+        <div className='filter'>
           {filters.map((filter, index) => (
             <button
               className={active === index ? "active" : ""}

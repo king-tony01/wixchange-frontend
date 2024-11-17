@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { WiXcoin } from "../assets/icons/wixcoin";
 
-function WalletCard() {
+function WalletCard({ balance }) {
   const [visible, setVisible] = useState(false);
   return (
-    <div className="wallet-card">
+    <div className='wallet-card'>
       <div>
         <small>Available balance</small>{" "}
         <i
@@ -13,12 +14,15 @@ function WalletCard() {
       </div>
       <b>
         {visible
-          ? (10000).toLocaleString("en-NG", {
+          ? balance.toLocaleString("en-NG", {
               style: "currency",
               currency: "NGN",
             })
           : "********"}
       </b>
+      <div className='wix-points'>
+        {<WiXcoin />} <span>0</span>
+      </div>
     </div>
   );
 }

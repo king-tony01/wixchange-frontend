@@ -5,6 +5,35 @@
     overflow-y: auto;
   }
 
+  .wallet-card {
+    padding: 20px;
+    border-radius: 15px;
+    background: linear-gradient(137deg, #343131, #512e2e);
+    margin: 10px 0;
+  }
+
+  .wallet-card div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .wallet-card small {
+    color: var(--text);
+    display: block;
+  }
+
+  .wallet-card .fas {
+    color: var(--text);
+    display: block;
+  }
+
+  .wallet-card b {
+    font-size: 20px;
+    color: var(--light-white);
+    display: block;
+  }
+
   .action-tab {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -79,5 +108,16 @@
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+
+  .wix-points {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .wix-points span {
+    display: block;
+    color: var(--card);
   }
 }

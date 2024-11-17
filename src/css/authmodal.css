@@ -99,4 +99,11 @@
   .pads button:nth-child(10) {
     grid-column: span 2;
   }
+
+  .loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
 }

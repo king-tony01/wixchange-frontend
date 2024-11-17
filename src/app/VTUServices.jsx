@@ -3,7 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import signal from "/src/assets/signal.png";
 import data from "/src/assets/data.png";
 import { dataBundles } from "../../test";
+import SelectContact from "./contact/SelectContact";
+import { TEST_API_TOKEN, vtuUrl } from "../assets/urls";
+import { fetchFromMobileVTU } from "../../utils/fetchAPI";
 function VTUServices() {
+  const [contact, setContact] = useState("");
+  const [contactsModal, setContactsModal] = useState(false);
   const networks = [
     {
       icon: "https://en.wikipedia.org/wiki/MTN_Group#/media/File:New-mtn-logo.jpg",
@@ -45,52 +50,96 @@ function VTUServices() {
     setOpen(false);
   };
 
+  const updateContact = (input) => {
+    if (input.length >= 12) return;
+    setContact(input.replace(/[^0-9]/g, ""));
+  };
+
+  async function fetchData() {
+    try {
+    } catch (err) {
+      console.log();
+    }
+  }
+
+  useEffect(() => {
+    if (contact.length == 11) {
+      const getOperator = async () => {
+        try {
+          const response = await fetchFromMobileVTU(
+            { phone: contact },
+            "number_operator"
+          );
+          if (response.status) {
+            console.log(response);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getOperator();
+    }
+  }, [contact]);
+
   useEffect(() => {
     if (back) {
       navigate(-1);
     }
   }, [navigate, back]);
   return (
-    <section className="vtu-services">
-      <header className="vtu-services-header">
-        <button className="back" onClick={() => setBack(true)}>
-          <i className="fas fa-chevron-left"></i>
+    <section className='vtu-services'>
+      <header className='vtu-services-header'>
+        <button className='back' onClick={() => setBack(true)}>
+          <i className='fas fa-chevron-left'></i>
         </button>
         <h3>VTU Services</h3>
       </header>
-      <section className="inner-vtu">
-        <div className="main-button">
+      <section className='inner-vtu'>
+        <div className='main-button'>
           {tabs.map((tab, index) => (
             <button
               key={index}
               className={active == index ? "active" : ""}
               onClick={() => setActive(index)}
             >
-              <img src={tab.icon} alt="" /> {tab.text}
+              <img src={tab.icon} alt='' /> {tab.text}
             </button>
           ))}
         </div>
-        <div className="number">
-          <div className="network-wrapper">
-            <div className="change-network" onClick={() => setOpen(true)}>
-              <img src={network.icon} alt="" />
-              <i className="fas fa-chevron-down"></i>
+        <div className='number'>
+          <div className='network-wrapper'>
+            <div className='change-network' onClick={() => setOpen(true)}>
+              <img src={network.icon} alt='' />
+              <i className='fas fa-chevron-down'></i>
             </div>
             <div className={`networks ${open ? "active" : ""}`}>
               {networks.map((network, index) => (
                 <button key={index} onClick={updateNetwork}>
-                  <img src={network.icon} alt="" />
+                  <img src={network.icon} alt='' />
                   {network.name}
                 </button>
               ))}
             </div>
           </div>
-          <input type="tel" name="phone" id="phone" value={"09063213825"} />
-          <button className="open-contact">
+          <input
+            type='tel'
+            name='phone'
+            id='phone'
+            value={contact}
+            onChange={(e) => updateContact(e.target.value)}
+            pattern='[0-9]*'
+            inputMode='numeric'
+            placeholder='Enter phone number'
+          />
+          {/*<button
+            className="open-contact"
+            onClick={() => setContactsModal(true)}
+          >
             <i className="fas fa-address-book"></i>
-          </button>
+          </button>*/}
         </div>
-        <div className="loan-container">
+        {contactsModal && <SelectContact action={setContactsModal} />}
+        <div className='loan-container'>
           <p>VTU Loan</p>
           <small>
             Out of balance but need to top up your phone? worry no more, you can
@@ -100,8 +149,8 @@ function VTUServices() {
           <button>Borrow Now</button>
         </div>
         {active == 0 ? (
-          <section className="data">
-            <div className="data-header">
+          <section className='data'>
+            <div className='data-header'>
               {dataHeader.map((header, index) => (
                 <span
                   key={index}
@@ -112,9 +161,9 @@ function VTUServices() {
                 </span>
               ))}
             </div>
-            <div className="data-wrapper">
+            <div className='data-wrapper'>
               {dataBundles.map((data) => (
-                <div className="data-card">
+                <div className='data-card'>
                   <b>{data.bundle}</b>
                   <small>{data.period}</small>
                   <small>
@@ -128,18 +177,18 @@ function VTUServices() {
             </div>
           </section>
         ) : (
-          <section className="airtime">
+          <section className='airtime'>
             <h3>Top-Up</h3>
             <input
-              type="number"
-              name="amount"
-              id="amount"
-              className="top-up-input"
-              placeholder="Min: 50   Max: 10000"
+              type='number'
+              name='amount'
+              id='amount'
+              className='top-up-input'
+              placeholder='Min: 50   Max: 10000'
             />
-            <div className="data-wrapper">
+            <div className='data-wrapper'>
               {dataBundles.slice(0, 3).map((data) => (
-                <div className="data-card">
+                <div className='data-card'>
                   <b>{data.bundle}</b>
                   <small>{data.period}</small>
                   <small>
@@ -151,7 +200,7 @@ function VTUServices() {
                 </div>
               ))}
             </div>
-            <button className="continue-btn">Continue</button>
+            <button className='continue-btn'>Continue</button>
           </section>
         )}
       </section>

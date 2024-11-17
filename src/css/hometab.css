@@ -1,6 +1,6 @@
 @media (max-width: 500px) {
   .hometab {
-    height: 86vh;
+    height: 83vh;
     padding: 0 10px;
     overflow-y: auto;
   }
@@ -78,35 +78,6 @@
   h1 {
     color: var(--light-white);
     font-size: 30px;
-  }
-
-  .wallet-card {
-    padding: 20px;
-    border-radius: 15px;
-    background: linear-gradient(137deg, #343131, #512e2e);
-    margin: 10px 0;
-  }
-
-  .wallet-card div {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .wallet-card small {
-    color: var(--text);
-    display: block;
-  }
-
-  .wallet-card .fas {
-    color: var(--text);
-    display: block;
-  }
-
-  .wallet-card b {
-    font-size: 20px;
-    color: var(--light-white);
-    display: block;
   }
 
   .quick-actions {

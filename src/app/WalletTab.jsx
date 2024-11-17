@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "/src/css/wallettab.css";
 import WalletCard from "./WalletCard";
 import { Link } from "react-router-dom";
+import { baseUrl } from "../assets/urls";
+import LoadingPage from "./components/LoadingPage";
+import TransactionCard from "./components/TransactionCard";
+import EmptyTransactions from "./components/EmptyTransactions";
 
 const transactions = [
   {
@@ -31,43 +35,53 @@ const transactions = [
 ];
 
 function WalletTab() {
+  const user = JSON.parse(localStorage.getItem("wix_user"));
+  const [wallet, setWallet] = useState(null);
+  useEffect(() => {
+    async function dashboard() {
+      try {
+        const response = await fetch(`${baseUrl}/api/user/${user.id}/wallet`, {
+          mode: "cors",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          setWallet(data.data);
+        } else if (response.status == 403) {
+          navigate("/login");
+        } else {
+          const data = await response.json();
+          console.log(data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    dashboard();
+  }, []);
+
+  if (!wallet) {
+    return <LoadingPage />;
+  }
+
   return (
-    <section className="wallettab">
+    <section className='wallettab'>
       <h1>Wallet</h1>
-      <WalletCard />
-      <div className="action-tab">
-        <Link to={"/fund"} className="fund">
-          <i className="fas fa-arrow-up"></i> Fund
+      <WalletCard balance={wallet.accountBalance} />
+      <div className='action-tab'>
+        <Link to={"/fund"} className='fund'>
+          <i className='fas fa-arrow-up'></i> Fund
         </Link>
-        <Link to={"/withdraw"} className="withdraw">
-          <i className="fas fa-arrow-down"></i> Withdraw
+        <Link to={"/withdraw"} className='withdraw'>
+          <i className='fas fa-arrow-down'></i> Withdraw
         </Link>
       </div>
       <h3>History</h3>
-      {transactions.map((transaction, index) => (
-        <div className="history-card">
-          <div className="left">
-            <i className="fas fa-arrow-up"></i>
-            <div>
-              <p>-N2000</p>
-              <small className="small">{transaction.globalType}</small>
-            </div>
-          </div>
-          <div className="right">
-            <small className="status">{transaction.status}</small>
-            <div className="history-time">
-              <small className="small">
-                {transaction.dateCreated.toDateString()}
-              </small>
-              <small className="small">
-                {transaction.dateCreated.getHours()}:
-                {transaction.dateCreated.getMinutes()}{" "}
-                {transaction.dateCreated.getHours() >= 12 ? "PM" : "AM"}
-              </small>
-            </div>
-          </div>
-        </div>
-      ))}
+      {(wallet.transactions.length > 0 &&
+        wallet.transactions.map((transaction, index) => (
+          <TransactionCard transaction={transaction} />
+        ))) || <EmptyTransactions />}
     </section>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import cardIcon from "/src/assets/gift-card.png";
+import { GiftCard } from "../assets/icons/giftcard";
 function GiftCardsHome() {
   const [back, setBack] = useState(false);
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ function GiftCardsHome() {
           <li>
             <div className="left">
               <span className="icon">
-                <img src={cardIcon} alt="" />
+                <img src={GiftCard.giftcard} alt="" />
               </span>
               <div>
                 <b>-N2,000</b>

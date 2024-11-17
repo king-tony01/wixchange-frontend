@@ -1,0 +1,89 @@
+@media (max-width: 500px) {
+  .menu {
+    max-height: 83vh;
+    overflow-y: auto;
+  }
+
+  .menu-body {
+    padding: 0 10px;
+  }
+
+  .upgrade-btn-con {
+    border-radius: 30px;
+    border: 1px solid var(--card);
+    display: flex;
+    align-items: center;
+  }
+
+  .upgrade-btn-con small {
+    color: var(--light);
+    display: block;
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: 800;
+  }
+
+  .upgrade-btn-con a {
+    display: block;
+    padding: 5px 10px;
+    font-size: 10px;
+    color: var(--light-white);
+    background: var(--secondary);
+    border-radius: 30px;
+  }
+
+  .wallet-card.menu-part {
+    padding: 20px;
+    border-radius: 15px;
+    background: var(--card-dark);
+    margin: 10px 0;
+  }
+
+  .tab-center {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .tab-center .fa-arrow-down {
+    color: #00ff4c !important;
+  }
+  .tab-center .fa-arrow-up {
+    color: #ff0000 !important;
+  }
+
+  .menu-section {
+    border-radius: 10px;
+    background: var(--card-dark);
+    margin-bottom: 10px;
+  }
+
+  .link-card {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+  }
+
+  .link-card-left {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .link-card-left-inner p {
+    color: var(--light-white);
+    font-size: 14px;
+  }
+
+  .link-card-left-inner small {
+    color: var(--text);
+    font-size: 12px;
+  }
+
+  .link-card .fa-chevron-right {
+    color: var(--light-white);
+  }
+}

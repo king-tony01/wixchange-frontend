@@ -1,7 +1,7 @@
 @media (max-width: 500px) {
   .services {
     position: relative;
-    height: 85vh;
+    height: 83vh;
     overflow-y: auto;
   }
 
@@ -301,5 +301,55 @@
     border-radius: 10px;
     background: var(--primary-button);
     margin: 10px 0;
+  }
+
+  .select-contact-modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: var(--bg);
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+  }
+
+  .contacts-body {
+    padding: 0 10px;
+  }
+
+  .contacts-sections {
+    margin: 10px 0;
+  }
+
+  .contacts-sections h4 {
+    color: var(--text);
+  }
+
+  .contacts-sections div {
+    border-radius: 10px;
+    background: var(--card-dark);
+    overflow: hidden;
+  }
+
+  .contacts-sections div button {
+    background: none;
+    padding: 10px;
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
+  .contacts-sections div button:active {
+    background: var(--card);
+  }
+
+  .contacts-sections div button p {
+    color: var(--light-white);
+    font-weight: 700;
+  }
+
+  .contacts-sections div button small {
+    display: block;
+    color: var(--text);
   }
 }
