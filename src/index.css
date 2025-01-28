@@ -1,10 +1,12 @@
 :root {
   --primary: #d8a25e;
   --secondary: #a04747;
+  --danger: #ff4848;
   --bg: #0a0a0a;
   --light: #eedf7a;
   --light-white: #f6f6f6;
   --card: #646464;
+  --disabled: #5c5b5b;
   --card-dark: #343131;
   --text: #bcbcbc;
   --primary-button: linear-gradient(137deg, #d8a25e, #a04747);

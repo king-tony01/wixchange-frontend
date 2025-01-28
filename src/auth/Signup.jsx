@@ -1,9 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "/src/css/auth.css";
 import { AuthContext } from "./AuthContext";
 import Spinner from "../Spinner";
 import ErrorModal from "../app/components/ErrorModal";
+import {
+  isStrongPassword,
+  isValidEmail,
+  isValidPhone,
+} from "../../utils/helpers";
+import WiXinput from "../app/components/WiXinput";
+import WiXPasswordInput from "../app/components/WiXPasswordInput";
 
 function Signup() {
   const [active, setActive] = useState(0);
@@ -13,6 +20,10 @@ function Signup() {
     placeholder: "Enter phone number",
   });
   const [user, setUser] = useState({ password: "", email: "", phone: "" });
+  const [complete, setComplete] = useState(
+    (user.phone !== "" && user.password !== "") ||
+      (user.email !== "" && user.password !== "")
+  );
   const switchTab = (index) => {
     setActive(index);
     setUser({ password: "", email: "", phone: "" });
@@ -39,6 +50,18 @@ function Signup() {
   const { sendForm, loading, setLoading, info, setInfo } =
     useContext(AuthContext);
 
+  // Dynamically calculate the `complete` state whenever the `user` object changes
+  useEffect(() => {
+    const isComplete =
+      (tab.type === "tel" &&
+        isValidPhone(user.phone) &&
+        isStrongPassword(user.password)) ||
+      (tab.type === "email" &&
+        isValidEmail(user.email) &&
+        isStrongPassword(user.password));
+    setComplete(isComplete);
+  }, [user, tab.type]);
+
   return (
     <section className="auth">
       {info.active ? (
@@ -63,44 +86,25 @@ function Signup() {
         ))}
       </div>
       <form action="">
-        <div className="input">
-          <i
-            className={`fas fa-${tab.type == "tel" ? "phone" : "envelope"}`}
-          ></i>
-          <input
-            type={tab.type}
-            name=""
-            id="phone"
-            placeholder={tab.placeholder}
-            value={tab.type == "tel" ? user.phone : user.email}
-            onInput={(e) =>
-              tab.type == "tel"
-                ? updatePhone(e.target.value)
-                : updateEmail(e.target.value)
-            }
-          />
-        </div>
-        <div className="input">
-          <i className="fas fa-key"></i>
-          <input
-            type={visible ? "text" : "password"}
-            name=""
-            id="password"
-            placeholder="Set password"
-            value={user.password}
-            onInput={(e) => updatePassword(e.target.value)}
-          />
-          <i
-            className={visible ? "fas fa-eye" : "fas fa-eye-slash"}
-            onClick={() => setVisible(!visible)}
-          ></i>
-        </div>
+        <WiXinput
+          tab={tab}
+          user={user}
+          updatePhone={updatePhone}
+          updateEmail={updateEmail}
+        />
+        <WiXPasswordInput
+          user={user}
+          updatePassword={updatePassword}
+          visible={visible}
+          setVisible={setVisible}
+        />
         <small className="small-text">
           Already have an account? <Link to={"/login"}>Login now</Link>
         </small>
         <button
-          className="action-btn"
+          className={`action-btn ${loading || !complete ? "disabled" : ""}`}
           onClick={(e) => sendForm(e, user, "/api/auth/signup")}
+          disabled={loading || !complete}
         >
           {loading ? <Spinner /> : `Signup`}
         </button>
