@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { WiXcoin } from "../assets/icons/wixcoin";
 import { MenuIcons } from "../assets/icons/menuIcons";
 import Section from "./menu/sections/Section";
+import { HomeContext } from "../contexts/HomeContext";
 
 function Menu() {
+  const { userInfo } = useContext(HomeContext);
   const [visible, setVisible] = useState(false);
   const firstSection = [
     {
@@ -55,6 +57,9 @@ function Menu() {
       subtitle: "",
     },
   ];
+
+  const { firstName, email, phone } = userInfo;
+
   return (
     <section className="menu">
       <header className="home-header">
@@ -62,11 +67,35 @@ function Menu() {
           <i className="fas fa-user-circle"></i>
           <div>
             <small>Good day! 👋</small>
-            <p>Wisdom</p>
+            <p>
+              {" "}
+              {userInfo ? (
+                firstName ? (
+                  firstName
+                ) : email ? (
+                  email.split("@")[0]
+                ) : (
+                  <span>{phone}</span>
+                )
+              ) : (
+                <span>Loading...</span>
+              )}
+            </p>
           </div>
         </div>
         <div className="upgrade-btn-con">
-          <small>Tier 1</small>
+          <small>
+            Tier{" "}
+            <span
+              style={{
+                marginLeft: "5px",
+                display: "inline-block",
+                color: "white",
+              }}
+            >
+              {userInfo.tier}
+            </span>
+          </small>
           <Link>Upgrade</Link>
         </div>
       </header>
@@ -82,7 +111,7 @@ function Menu() {
           <div className="tab-center">
             <b>
               {visible
-                ? (10000).toLocaleString("en-NG", {
+                ? parseInt(userInfo.accountBalance).toLocaleString("en-NG", {
                     style: "currency",
                     currency: "NGN",
                   })
@@ -91,11 +120,11 @@ function Menu() {
             <div className="chart">
               <div>
                 <i className="fas fa-arrow-down"></i>
-                <small>30%</small>
+                <small>0%</small>
               </div>
               <div>
                 <i className="fas fa-arrow-up"></i>
-                <small>60%</small>
+                <small>0%</small>
               </div>
             </div>
           </div>

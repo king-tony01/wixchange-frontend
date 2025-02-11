@@ -84,7 +84,13 @@
     align-items: center;
     justify-content: center;
     color: var(--light-white);
+  }
+
+  .history-card .left .fas.fa-arrow-up {
     background: red;
+  }
+  .history-card .left .fas.fa-arrow-down {
+    background: rgb(1, 211, 64);
   }
 
   .history-card .small {

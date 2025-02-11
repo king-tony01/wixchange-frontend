@@ -1,8 +1,8 @@
 /**
  * The base url of the WiXchange backend. All backend services are performed on this url.
  */
-export const baseUrl = `https://wixchange-backend.onrender.com`;
-//export const baseUrl = `http://192.168.1.4:5022`;
+//export const baseUrl = `https://wixchange-backend.onrender.com`;
+export const baseUrl = `http://192.168.101.27:3000`;
 
 const TEST_API_KEY = `8yGf4Ri3UeuwaA44LX1oo0000wDc`;
 export const TEST_API_TOKEN = `HHaBgvjx9gwE88uy66zJjhey8lfd`;
