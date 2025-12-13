@@ -1,5 +1,5 @@
 import React from "react";
-import emptyImage from "/src/assets/empty.png";
+import emptyImage from "../../assets/empty.png";
 import { Link } from "react-router-dom";
 function EmptyList() {
   return (

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { isStrongPassword } from "../../../utils/helpers";
 
 function WiXPasswordInput({ user, updatePassword, visible, setVisible }) {
-  const [correct, setCorrect] = useState(false);
+  const [touched, setTouched] = useState(false);
   const [active, setActive] = useState(false);
-  useEffect(() => {
-    setCorrect(isStrongPassword(user.password));
-  }, [user]);
+
+  const isValid = isStrongPassword(user.password);
+  const shouldShowError = touched && (!user.password || !isValid);
+
   return (
-    <div className={`input ${!correct ? "incorrect" : ""}`}>
+    <div className={`input ${shouldShowError ? "incorrect" : ""}`}>
       <i className="fas fa-key"></i>
       <input
         type={visible ? "text" : "password"}
@@ -17,11 +18,10 @@ function WiXPasswordInput({ user, updatePassword, visible, setVisible }) {
         placeholder="Set password"
         value={user.password}
         onBlur={() => {
-          setCorrect(true);
           setActive(false);
+          setTouched(true);
         }}
         onFocus={() => {
-          setCorrect(isStrongPassword(user.password));
           setActive(true);
         }}
         onInput={(e) => {
@@ -32,7 +32,7 @@ function WiXPasswordInput({ user, updatePassword, visible, setVisible }) {
         className={visible ? "fas fa-eye" : "fas fa-eye-slash"}
         onClick={() => setVisible(!visible)}
       ></i>
-      {active && !correct ? (
+      {active && shouldShowError ? (
         <div className="tooltip password">
           <i className="fas fa-close"></i>{" "}
           <small>

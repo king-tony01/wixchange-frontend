@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "./Grid";
-import "/src/css/sectionlist.css";
+import "../css/sectionlist.css";
 function SectionList({ list }) {
   return (
     <div className="section-list">

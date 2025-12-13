@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import bigScreen from "/src/assets/big-screen.png";
+import bigScreen from "./assets/big-screen.png";
 import AuthProvider from "./auth/AuthContext";
 function App() {
   const [screen, setScreen] = useState(window.innerWidth);

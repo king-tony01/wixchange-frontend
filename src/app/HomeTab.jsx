@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "/src/css/hometab.css";
-import "/src/css/cards.css";
-import "/src/css/services.css";
-import "/src/css/giftcards.css";
-import "/src/css/menu.css";
+import "../css/hometab.css";
+import "../css/cards.css";
+import "../css/services.css";
+import "../css/giftcards.css";
+import "../css/menu.css";
 import WalletCard from "./WalletCard";
 import QuickActions from "./QuickActions";
 import CardsList from "./CardsList";

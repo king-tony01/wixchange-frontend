@@ -13,5 +13,5 @@ export const isStrongPassword = (password) => {
 
 // Function to validate phone number
 export const isValidPhone = (phone) => {
-  return phone.length == 11 && /^\d+$/.test(phone); // At least 11 digits and numeric
+  return phone.length === 11 && /^\d+$/.test(phone); // Exactly 11 digits and numeric
 };

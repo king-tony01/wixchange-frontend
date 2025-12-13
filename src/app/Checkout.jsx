@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "/src/css/checkout.css";
+import "../css/checkout.css";
 import AuthModal from "./AuthModal";
 export const CheckoutContext = createContext();
 function Checkout() {

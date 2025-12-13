@@ -1,34 +1,37 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { baseUrl } from "../assets/urls";
+import { baseUrl, vtuUrl, TEST_API_TOKEN } from "../assets/urls";
 
 export const HomeContext = createContext();
 
 function HomeProvider({ children }) {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("wix_user"));
   const [vtuList, setVtuList] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
   const [transactions, setTransactions] = useState([]);
+  const token = localStorage.getItem("wix_token");
+
   useEffect(() => {
-    if (!user) {
+    if (!token) {
       navigate("/login");
+      return;
     }
 
     async function dashboard() {
       try {
-        const response = await fetch(
-          `${baseUrl}/api/user/${user.id}/overview`,
-          {
-            mode: "cors",
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/user/overview`, {
+          mode: "cors",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           console.log(data);
           setUserInfo(data.data.userInfo);
           setTransactions(data.data.transactions);
-        } else if (response.status == 403) {
+        } else if (response.status === 403 || response.status === 401) {
           navigate("/login");
         } else {
           const data = await response.json();
@@ -40,6 +43,9 @@ function HomeProvider({ children }) {
     }
 
     dashboard();
+  }, [token, navigate, baseUrl]);
+
+  useEffect(() => {
     async function fetchVTUServices() {
       const operators = ["MTN", "Airtel", "9mobile", "Glo"];
       const results = [];
@@ -54,7 +60,7 @@ function HomeProvider({ children }) {
               "Content-Type": "application/x-www-form-urlencoded",
             },
             body: new URLSearchParams({
-              operator: operator, // Send one operator per request
+              operator: operator,
             }),
             mode: "cors",
             credentials: "omit",
@@ -62,6 +68,7 @@ function HomeProvider({ children }) {
 
           const data = await response.json();
           results.push(data);
+          setVtuList(results);
         }
 
         console.log("Combined Results:", results);
@@ -71,7 +78,7 @@ function HomeProvider({ children }) {
     }
 
     fetchVTUServices();
-  }, []);
+  }, [vtuUrl, TEST_API_TOKEN]);
 
   return (
     <HomeContext.Provider value={{ userInfo, vtuList, transactions }}>

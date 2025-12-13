@@ -7,11 +7,10 @@ function AuthProvider({ children }) {
   const PK = "ps_pk_test_EjH78aAljllbl9Pr0hXX3QxRzHHKJW";
   const billsAPI =
     "https://sandbox.payscribe.ng/api/v1//bouquets/?service=dstv";
-  const [loggedIn, setLoggedin] = useState(
-    JSON.parse(localStorage.getItem("wix_user"))
-  );
+  const [loggedIn, setLoggedin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("wix_token"));
   const [info, setInfo] = useState({
     className: "",
     title: "",
@@ -21,11 +20,22 @@ function AuthProvider({ children }) {
   });
   const navigate = useNavigate();
 
+  // Check if user is logged in based on token
+  useEffect(() => {
+    const storedToken = localStorage.getItem("wix_token");
+    if (storedToken) {
+      setToken(storedToken);
+      setLoggedin(true);
+    } else {
+      setLoggedin(false);
+    }
+  }, []);
+
   const sendForm = async (event, user, endpoint) => {
     event.preventDefault();
     if (
-      (user.password == "" && user.email == "") ||
-      (user.password == "" && user.phone == "")
+      (user.password === "" && user.email === "") ||
+      (user.password === "" && user.phone === "")
     ) {
       setInfo({
         className: "warning",
@@ -49,15 +59,28 @@ function AuthProvider({ children }) {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        if (data.stat) {
+        if (data.stat && data.token) {
+          // Store token in localStorage
+          localStorage.setItem("wix_token", data.token);
           localStorage.setItem("wix_user", JSON.stringify({ ...data.user }));
+          setToken(data.token);
           setUserData(data.user);
           setLoggedin(true);
+          setLoading(false);
           navigate("/");
+        } else {
+          setLoading(false);
+          setInfo({
+            className: "error",
+            title: "Authentication Failed!",
+            message: "Please try again.",
+            icon: "xmark-circle",
+            active: true,
+          });
         }
       } else {
         const resData = await response.json();
-        if (response.status == 404) {
+        if (response.status === 404) {
           setInfo({
             className: "error",
             title: "Invalid Credentials!",
@@ -69,7 +92,7 @@ function AuthProvider({ children }) {
         setLoading(false);
       }
     } catch (err) {
-      setLoading(false); // Ensure loading is false in case of an error
+      setLoading(false);
       console.error("An error occurred:", err);
       setInfo({
         className: "error",
@@ -81,11 +104,21 @@ function AuthProvider({ children }) {
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem("wix_token");
+    localStorage.removeItem("wix_user");
+    setToken(null);
+    setLoggedin(false);
+    setUserData(null);
+    navigate("/login");
+  };
+
   useEffect(() => {
-    if (!loggedIn) {
+    if (!loggedIn && !token) {
       navigate("/login");
     }
-  }, [loggedIn, navigate]);
+  }, [loggedIn, token, navigate]);
+
   return (
     <AuthContext.Provider
       value={{
@@ -98,6 +131,8 @@ function AuthProvider({ children }) {
         info,
         setInfo,
         userData,
+        token,
+        logout,
       }}
     >
       {children}

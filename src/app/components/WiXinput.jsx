@@ -2,45 +2,40 @@ import React, { useEffect, useState } from "react";
 import { isValidEmail, isValidPhone } from "../../../utils/helpers";
 
 function WiXinput({ tab, user, updatePhone, updateEmail }) {
-  const [correct, setCorrect] = useState(false);
+  const [touched, setTouched] = useState(false);
   const [active, setActive] = useState(false);
-  useEffect(() => {
-    const isComplete =
-      (tab.type === "tel" && isValidPhone(user.phone)) ||
-      (tab.type === "email" && isValidEmail(user.email));
-    setCorrect(isComplete);
-  }, [user, tab.type]);
+
+  const isValid =
+    tab.type === "tel" ? isValidPhone(user.phone) : isValidEmail(user.email);
+  const currentValue = tab.type === "tel" ? user.phone : user.email;
+  const shouldShowError = touched && (!currentValue || !isValid);
+
   return (
-    <div className={`input ${!correct ? "incorrect" : ""}`}>
-      <i className={`fas fa-${tab.type == "tel" ? "phone" : "envelope"}`}></i>
+    <div className={`input ${shouldShowError ? "incorrect" : ""}`}>
+      <i className={`fas fa-${tab.type === "tel" ? "phone" : "envelope"}`}></i>
       <input
         type={tab.type}
         name=""
         id="phone"
         placeholder={tab.placeholder}
-        value={tab.type == "tel" ? user.phone : user.email}
+        value={currentValue}
         onBlur={() => {
-          setCorrect(true);
           setActive(false);
+          setTouched(true);
         }}
         onFocus={() => {
-          setCorrect(
-            tab.type == "tel"
-              ? isValidPhone(user.phone)
-              : isValidEmail(user.email)
-          );
           setActive(true);
         }}
         onInput={(e) =>
-          tab.type == "tel"
+          tab.type === "tel"
             ? updatePhone(e.target.value)
             : updateEmail(e.target.value)
         }
       />
-      {active && !correct ? (
+      {active && shouldShowError ? (
         <div className="tooltip">
           <i className="fas fa-close"></i>{" "}
-          <small>{tab.type == "tel" ? "Phone" : "Email"} is invalid!</small>
+          <small>{tab.type === "tel" ? "Phone" : "Email"} is invalid!</small>
         </div>
       ) : null}
     </div>

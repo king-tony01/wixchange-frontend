@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "/src/css/auth.css";
+import "../css/auth.css";
 import { AuthContext } from "./AuthContext";
 import Spinner from "../Spinner";
 import ErrorModal from "../app/components/ErrorModal";
@@ -27,7 +27,7 @@ function Signup() {
   const switchTab = (index) => {
     setActive(index);
     setUser({ password: "", email: "", phone: "" });
-    if (index == 1) {
+    if (index === 1) {
       setTab({ type: "email", placeholder: "Enter email address" });
     } else {
       setTab({ type: "tel", placeholder: "Enter phone number" });
@@ -37,13 +37,9 @@ function Signup() {
     setUser({ ...user, password: input });
   };
   const updatePhone = (input) => {
-    console.log(input);
-    console.log(user);
-
     setUser({ ...user, phone: input });
   };
   const updateEmail = (input) => {
-    console.log(input);
     setUser({ ...user, email: input });
   };
 
@@ -78,7 +74,7 @@ function Signup() {
       <div className="tabs">
         {["Phone", "Email"].map((item, index) => (
           <button
-            className={index == active ? "active" : ""}
+            className={index === active ? "active" : ""}
             onClick={() => switchTab(index)}
           >
             {item}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import signal from "/src/assets/signal.png";
-import data from "/src/assets/data.png";
+import signal from "../assets/signal.png";
+import data from "../assets/data.png";
 import { dataBundles } from "../../test";
 import SelectContact from "./contact/SelectContact";
 import { TEST_API_TOKEN, vtuUrl } from "../assets/urls";
@@ -58,12 +58,12 @@ function VTUServices() {
   async function fetchData() {
     try {
     } catch (err) {
-      console.log();
+      // Error handling
     }
   }
 
   useEffect(() => {
-    if (contact.length == 11) {
+    if (contact.length === 11) {
       const getOperator = async () => {
         try {
           const response = await fetchFromMobileVTU(
@@ -99,7 +99,7 @@ function VTUServices() {
           {tabs.map((tab, index) => (
             <button
               key={index}
-              className={active == index ? "active" : ""}
+              className={active === index ? "active" : ""}
               onClick={() => setActive(index)}
             >
               <img src={tab.icon} alt='' /> {tab.text}
@@ -148,7 +148,7 @@ function VTUServices() {
           </small>
           <button>Borrow Now</button>
         </div>
-        {active == 0 ? (
+        {active === 0 ? (
           <section className='data'>
             <div className='data-header'>
               {dataHeader.map((header, index) => (

@@ -6,7 +6,7 @@ function TransactionCard({ transaction }) {
       <div className="left">
         <i
           className={`fas fa-arrow-${
-            transaction.type == "withdrawal" ? "up" : "down"
+            transaction.type === "withdrawal" ? "up" : "down"
           }`}
         ></i>
         <div>

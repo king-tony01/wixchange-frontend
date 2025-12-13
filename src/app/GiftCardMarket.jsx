@@ -3,7 +3,7 @@ import SectionList from "./SectionList";
 import { TopBarIcons } from "../assets/icons/topBarIcons";
 import { cards } from "../../test";
 import { Link, useNavigate } from "react-router-dom";
-import EmptyList from "/src/app/components/EmptyList";
+import EmptyList from "./components/EmptyList";
 function GiftCardMarket() {
   const [active, setActive] = useState(0);
   const [back, setBack] = useState(false);

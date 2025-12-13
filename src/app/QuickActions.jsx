@@ -7,15 +7,15 @@ function QuickActions() {
       {["/withdraw", "/fund", "/vtu", "/gift-card", "/bills", "/reward"].map(
         (path, index) => (
           <Link to={path} key={index + 1}>
-            {path == "/withdraw"
+            {path === "/withdraw"
               ? QuickActionsIcons.withdraw
-              : path == "/fund"
+              : path === "/fund"
               ? QuickActionsIcons.fund
-              : path == "/vtu"
+              : path === "/vtu"
               ? QuickActionsIcons.vtu
-              : path == "/gift-card"
+              : path === "/gift-card"
               ? QuickActionsIcons.giftcard
-              : path == "/bills"
+              : path === "/bills"
               ? QuickActionsIcons.bills
               : QuickActionsIcons.rewards}
           </Link>

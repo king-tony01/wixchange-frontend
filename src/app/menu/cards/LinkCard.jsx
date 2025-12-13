@@ -1,9 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function LinkCard({ title, subtitle, icon }) {
+function LinkCard({ title, subtitle, icon, action }) {
+  const handleClick = (e) => {
+    if (action) {
+      e.preventDefault();
+      action();
+    }
+  };
+
   return (
-    <Link className="link-card">
+    <Link className="link-card" onClick={handleClick}>
       <div className="link-card-left">
         {icon}
         <div className="link-card-left-inner">

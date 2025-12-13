@@ -4,9 +4,11 @@ import { WiXcoin } from "../assets/icons/wixcoin";
 import { MenuIcons } from "../assets/icons/menuIcons";
 import Section from "./menu/sections/Section";
 import { HomeContext } from "../contexts/HomeContext";
+import { AuthContext } from "../auth/AuthContext";
 
 function Menu() {
   const { userInfo } = useContext(HomeContext);
+  const { logout } = useContext(AuthContext);
   const [visible, setVisible] = useState(false);
   const firstSection = [
     {
@@ -55,6 +57,7 @@ function Menu() {
       icon: MenuIcons.logout,
       title: "Log out",
       subtitle: "",
+      action: logout,
     },
   ];
 

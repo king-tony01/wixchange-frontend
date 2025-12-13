@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "/src/css/auth.css";
+import "../css/auth.css";
 import { AuthContext } from "./AuthContext";
 import Spinner from "../Spinner";
 import ErrorModal from "../app/components/ErrorModal";
@@ -29,7 +29,7 @@ function Login() {
   const switchTab = (index) => {
     setActive(index);
     setUser({ password: "", email: "", phone: "" });
-    if (index == 1) {
+    if (index === 1) {
       setTab({ type: "email", placeholder: "Enter email address" });
     } else {
       setTab({ type: "tel", placeholder: "Enter phone number" });
@@ -105,7 +105,7 @@ function Login() {
       <div className="tabs">
         {["Phone", "Email"].map((item, index) => (
           <button
-            className={index == active ? "active" : ""}
+            className={index === active ? "active" : ""}
             onClick={() => switchTab(index)}
           >
             {item}

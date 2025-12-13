@@ -52,13 +52,14 @@ function Services() {
         }
 
         const result = await response.json();
-        setData(result);
+        // Data fetched successfully
+        console.log(result);
       } catch (err) {
         console.log(err.message);
       }
     };
     bouquets();
-  }, []);
+  }, [PK]);
 
   return (
     <section className="services">

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import "/src/css/wallettab.css";
+import "../css/wallettab.css";
 import WalletCard from "./WalletCard";
 import { Link } from "react-router-dom";
 import LoadingPage from "./components/LoadingPage";

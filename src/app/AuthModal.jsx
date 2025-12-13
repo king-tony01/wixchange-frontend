@@ -1,35 +1,37 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "/src/css/authmodal.css";
+import "../css/authmodal.css";
 import { CheckoutContext } from "./Checkout";
 import { baseUrl } from "../assets/urls";
 import Spinner from "../Spinner";
 function AuthModal() {
   const { setOpen } = useContext(CheckoutContext);
-  let [pinInput, setPinInput] = useState("");
+  const [pinInput, setPinInput] = useState("");
   const [active, setActive] = useState(0);
   const [sending, setSending] = useState(false);
   function updatePinInput(input) {
-    if (pinInput.length == 4) return;
+    if (pinInput.length === 4) return;
     setPinInput((pinInput += input));
     if (pinInput.length > 1) setActive(active + 1);
   }
 
   function deleteOne() {
-    if (pinInput.length == 0) return;
+    if (pinInput.length === 0) return;
     setPinInput(pinInput.slice(0, -1));
     if (pinInput.length > 1) setActive(active - 1);
   }
 
   useEffect(() => {
-    if (pinInput.length == 4) {
+    if (pinInput.length === 4) {
       setSending(true);
       const checkPin = async () => {
         try {
-          const response = await fetch(`${baseUrl}/api/pin/check`, {
+          const token = localStorage.getItem("wix_token");
+          const response = await fetch(`${baseUrl}/api/pin/verify`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ pin: +pinInput }),
           });
@@ -37,6 +39,7 @@ function AuthModal() {
             const responseData = await response.json();
             console.log(responseData);
             setSending(false);
+            setOpen(false);
           } else {
             const responseData = await response.json();
             console.log(responseData);
@@ -44,11 +47,12 @@ function AuthModal() {
           }
         } catch (err) {
           console.log(err.message);
+          setSending(false);
         }
       };
       checkPin();
     }
-  }, [pinInput]);
+  }, [pinInput, setOpen]);
 
   return (
     <section className="auth-modal">
@@ -85,7 +89,7 @@ function AuthModal() {
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((pad, index) => (
             <button
               key={index}
-              onClick={(e) => updatePinInput(e.target.textContent)}
+              onClick={() => updatePinInput(pad)}
             >
               {pad}
             </button>
