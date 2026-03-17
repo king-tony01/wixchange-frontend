@@ -10,9 +10,12 @@ function AuthModal() {
   const [active, setActive] = useState(0);
   const [sending, setSending] = useState(false);
   function updatePinInput(input) {
-    if (pinInput.length === 4) return;
-    setPinInput((pinInput += input));
-    if (pinInput.length > 1) setActive(active + 1);
+    setPinInput((prev) => {
+      if (prev.length === 4) return prev;
+      const next = `${prev}${input}`;
+      if (next.length > 1) setActive(next.length - 1);
+      return next;
+    });
   }
 
   function deleteOne() {
@@ -87,10 +90,7 @@ function AuthModal() {
         <Link>Forgot your PIN?</Link>
         <div className="pads">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((pad, index) => (
-            <button
-              key={index}
-              onClick={() => updatePinInput(pad)}
-            >
+            <button key={index} onClick={() => updatePinInput(pad)}>
               {pad}
             </button>
           ))}
