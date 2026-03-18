@@ -1,93 +1,26 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/auth.css";
 import { AuthContext } from "./AuthContext";
 import Spinner from "../Spinner";
 import ErrorModal from "../app/components/ErrorModal";
-import { TEST_API_TOKEN, vtuUrl } from "../assets/urls";
-import {
-  isValidPhone,
-  isStrongPassword,
-  isValidEmail,
-} from "../../utils/helpers";
 import WiXinput from "../app/components/WiXinput";
 import WiXPasswordInput from "../app/components/WiXPasswordInput";
+import { useAuthForm } from "../hooks/useAuthForm";
 
 function Login() {
-  const [active, setActive] = useState(0);
-  const [error, setError] = useState(null);
   const [visible, setVisible] = useState(false);
-  const [tab, setTab] = useState({
-    type: "tel",
-    placeholder: "Enter phone number",
-  });
-  const [user, setUser] = useState({ password: "", email: "", phone: "" });
-  const [complete, setComplete] = useState(
-    (user.phone !== "" && user.password !== "") ||
-      (user.email !== "" && user.password !== "")
-  );
-  const switchTab = (index) => {
-    setActive(index);
-    setUser({ password: "", email: "", phone: "" });
-    if (index === 1) {
-      setTab({ type: "email", placeholder: "Enter email address" });
-    } else {
-      setTab({ type: "tel", placeholder: "Enter phone number" });
-    }
-  };
-  const updatePassword = (input) => {
-    setUser({ ...user, password: input });
-  };
-  const updatePhone = (input) => {
-    setUser({ ...user, phone: input });
-  };
-  const updateEmail = (input) => {
-    setUser({ ...user, email: input });
-  };
-  const { sendForm, loading, setLoading, info, setInfo } =
-    useContext(AuthContext);
-
-  useEffect(() => {
-    async function getNumberOperator() {
-      try {
-        const response = await fetch(`${vtuUrl}fetch_data_plans`, {
-          method: "POST",
-          headers: {
-            "Api-Token": TEST_API_TOKEN,
-            "Request-Id": Date.now().toString(),
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: new URLSearchParams({
-            operator: "MTN",
-          }),
-          mode: "cors",
-          credentials: "omit",
-        });
-
-        const data = await response.json();
-        console.log(data);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    }
-    /* setComplete(
-      (user.email !== "" && user.password !== "") ||
-        (user.phone !== "" && user.password !== "")
-    );*/
-
-    getNumberOperator();
-  }, []);
-
-  useEffect(() => {
-    const isComplete =
-      (tab.type === "tel" &&
-        isValidPhone(user.phone) &&
-        isStrongPassword(user.password)) ||
-      (tab.type === "email" &&
-        isValidEmail(user.email) &&
-        isStrongPassword(user.password));
-    setComplete(isComplete);
-  }, [user, tab.type]);
+  const {
+    active,
+    tab,
+    user,
+    complete,
+    switchTab,
+    updatePassword,
+    updatePhone,
+    updateEmail,
+  } = useAuthForm();
+  const { sendForm, loading, info, setInfo } = useContext(AuthContext);
 
   return (
     <section className="auth">
@@ -105,6 +38,7 @@ function Login() {
       <div className="tabs">
         {["Phone", "Email"].map((item, index) => (
           <button
+            key={item}
             className={index === active ? "active" : ""}
             onClick={() => switchTab(index)}
           >

@@ -15,10 +15,9 @@ function SelectContact({ action, setContact }) {
         setContacts(cont);
       } catch (err) {
         console.log(err);
-        alert(err);
       }
     };
-    getContacts;
+    getContacts();
   }, []);
   return (
     <section className="select-contact-modal">
@@ -33,9 +32,16 @@ function SelectContact({ action, setContact }) {
           <h4>A</h4>
           <div>
             {contacts.map((contact, index) => (
-              <button key={index}>
-                <p>Amuche Anthony</p>
-                <small>09063213825</small>
+              <button
+                key={`${contact?.name?.[0] ?? "contact"}-${index}`}
+                onClick={() => {
+                  const phone = contact?.tel?.[0] ?? "";
+                  if (setContact && phone) setContact(phone.replace(/\D/g, ""));
+                  action(false);
+                }}
+              >
+                <p>{contact?.name?.[0] ?? "Unknown Contact"}</p>
+                <small>{contact?.tel?.[0] ?? "No number"}</small>
               </button>
             ))}
           </div>

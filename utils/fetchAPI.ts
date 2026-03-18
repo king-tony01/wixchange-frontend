@@ -66,7 +66,7 @@ export async function fetchFromMobileVTU(payload, url) {
       status: true,
       data,
     };
-  } catch (err) {
+  } catch {
     return { status: false, message: "Could not complete the request" };
   }
 }

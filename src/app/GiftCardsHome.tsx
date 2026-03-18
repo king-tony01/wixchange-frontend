@@ -1,18 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import { GiftCard } from "../assets/icons/giftcard";
+import { useBackNavigation } from "../hooks/useBackNavigation";
+import { useGiftCards } from "../hooks/useGiftCards";
+
+function formatMoney(amount) {
+  return Number(amount).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+}
+
+function formatHistoryType(type) {
+  if (type === "buy") return "Card Purchased";
+  if (type === "sell") return "Card Sold";
+  return "Card Listed";
+}
+
 function GiftCardsHome() {
-  const [back, setBack] = useState(false);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (back) {
-      navigate(-1);
-    }
-  }, [navigate, back]);
+  const goBack = useBackNavigation();
+  const { ownedCards, history } = useGiftCards();
   return (
     <section className="gift-card-home">
       <header className="gift-card-home-header">
-        <button onClick={() => setBack(true)}>
+        <button onClick={goBack}>
           <i className="fas fa-chevron-left"></i>
         </button>
         <h3>Gift Cards Services</h3>
@@ -20,11 +31,17 @@ function GiftCardsHome() {
       <div className="gift-card-home-hero">
         <p className="sub-title">Owned Cards</p>
         <div className="owned-cards">
-          <div className="card-prev-home">
-            <img src="" alt="" />
-            <p>Lorem ipsum dolor sit.</p>
-            <small>$25.00</small>
-          </div>
+          {ownedCards.length === 0 ? (
+            <small>No owned cards yet. Purchased cards will appear here.</small>
+          ) : (
+            ownedCards.slice(0, 8).map((card) => (
+              <div className="card-prev-home" key={card.id}>
+                <img src={card.image} alt={`${card.name} gift card`} />
+                <p>{card.name}</p>
+                <small>{formatMoney(card.value)}</small>
+              </div>
+            ))
+          )}
         </div>
       </div>
       <div className="action-buttons">
@@ -35,28 +52,44 @@ function GiftCardsHome() {
       </div>
       <div className="history-header">
         <p>History</p>
-        <Link>See All</Link>
+        <small>{history.length} records</small>
       </div>
       <div className="card-history">
         <ul>
-          <li>
-            <div className="left">
-              <span className="icon">
-                <img src={GiftCard.giftcard} alt="" />
-              </span>
-              <div>
-                <b>-N2,000</b>
-                <small>Card Sold</small>
+          {history.length === 0 ? (
+            <li>
+              <div className="left">
+                <span className="icon">
+                  <img src={GiftCard.giftcard} alt="gift card icon" />
+                </span>
+                <div>
+                  <b>No activity yet</b>
+                  <small>Your gift card transactions will show here.</small>
+                </div>
               </div>
-            </div>
-            <div className="right">
-              <small className="status">Pending</small>
-              <small>
-                {new Date().toDateString()} {new Date().getHours()}:
-                {new Date().getMinutes()} AM
-              </small>
-            </div>
-          </li>
+            </li>
+          ) : (
+            history.slice(0, 12).map((record) => (
+              <li key={record.id}>
+                <div className="left">
+                  <span className="icon">
+                    <img src={GiftCard.giftcard} alt="gift card icon" />
+                  </span>
+                  <div>
+                    <b>
+                      {record.type === "buy" ? "-" : "+"}
+                      {formatMoney(record.amount)}
+                    </b>
+                    <small>{formatHistoryType(record.type)}</small>
+                  </div>
+                </div>
+                <div className="right">
+                  <small className="status">{record.status}</small>
+                  <small>{new Date(record.createdAt).toLocaleString()}</small>
+                </div>
+              </li>
+            ))
+          )}
         </ul>
       </div>
     </section>

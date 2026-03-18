@@ -1,49 +1,102 @@
-import React, { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { createContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../css/checkout.css";
 import AuthModal from "./AuthModal";
-export const CheckoutContext = createContext();
-function Checkout() {
-  const [back, setBack] = useState(false);
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
+import { useBackNavigation } from "../hooks/useBackNavigation";
+import { useGiftCards } from "../hooks/useGiftCards";
 
-  useEffect(() => {
-    if (back) {
-      navigate(-1);
+export const CheckoutContext = createContext({
+  setOpen: () => {},
+  onAuthorized: () => {},
+});
+
+function formatMoney(amount) {
+  return Number(amount).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+}
+
+function Checkout() {
+  const [open, setOpen] = useState(false);
+  const goBack = useBackNavigation();
+  const navigate = useNavigate();
+  const { cart, removeFromCart, completeCheckout } = useGiftCards();
+
+  const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+  const platformFee = subtotal * 0.01;
+  const total = subtotal + platformFee;
+
+  const onAuthorized = () => {
+    const result = completeCheckout();
+    if (result.ok) {
+      setOpen(false);
+      navigate("/services/gift-card");
     }
-  }, [navigate, back]);
+  };
+
   return (
-    <CheckoutContext.Provider value={{ setOpen }}>
+    <CheckoutContext.Provider value={{ setOpen, onAuthorized }}>
       <section className="checkout">
         <header className="card-market-header">
-          <button onClick={() => setBack(true)}>
+          <button onClick={goBack}>
             <i className="fas fa-chevron-left"></i>
           </button>
           <h3>Checkout</h3>
         </header>
         <div className="checkout-body">
           <h4>Items</h4>
-          <ul>
-            <li>
-              <img src="" alt="" />
-              <div>
-                <p>Amazon</p>
-                <div>
-                  <b>$25.00</b>
-                  <small>
-                    Selling price: <span>$20.00</span>
-                  </small>
-                </div>
-              </div>
-            </li>
-          </ul>
+          {cart.length === 0 ? (
+            <div>
+              <p style={{ color: "var(--text)", marginBottom: 10 }}>
+                Your cart is empty.
+              </p>
+              <Link to="/services/gift-card/marketplace">
+                Go to marketplace
+              </Link>
+            </div>
+          ) : (
+            <ul>
+              {cart.map((item) => (
+                <li key={item.id}>
+                  <img src={item.image} alt={`${item.name} gift card`} />
+                  <div>
+                    <p>{item.name}</p>
+                    <div>
+                      <b>{formatMoney(item.value)}</b>
+                      <small>
+                        Selling price: <span>{formatMoney(item.price)}</span>
+                      </small>
+                      <small>
+                        <button
+                          type="button"
+                          onClick={() => removeFromCart(item.id)}
+                          style={{
+                            background: "none",
+                            color: "#ef4444",
+                            padding: 0,
+                            textDecoration: "underline",
+                          }}
+                        >
+                          Remove
+                        </button>
+                      </small>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
           <div className="total-cal">
-            <small>Platform fee: 1%</small>
-            <small>Total: $20.2 + 1% fee</small>
+            <small>Platform fee (1%): {formatMoney(platformFee)}</small>
+            <small>Total: {formatMoney(total)}</small>
           </div>
-          <button className="pay-btn" onClick={() => setOpen(true)}>
-            Pay $20.20
+          <button
+            className="pay-btn"
+            onClick={() => setOpen(true)}
+            disabled={cart.length === 0}
+          >
+            Pay {formatMoney(total)}
           </button>
           <div className="buyer-protection">
             <i className="fas fa-user-shield"></i>

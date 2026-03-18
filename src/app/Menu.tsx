@@ -10,6 +10,9 @@ function Menu() {
   const { userInfo } = useContext(HomeContext);
   const { logout } = useContext(AuthContext);
   const [visible, setVisible] = useState(false);
+
+  if (!userInfo) return null;
+
   const firstSection = [
     {
       icon: MenuIcons.profile,
@@ -99,7 +102,9 @@ function Menu() {
               {userInfo.tier}
             </span>
           </small>
-          <Link>Upgrade</Link>
+          <Link to="#" onClick={(e) => e.preventDefault()}>
+            Upgrade
+          </Link>
         </div>
       </header>
       <div className="menu-body">

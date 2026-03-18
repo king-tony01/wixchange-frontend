@@ -1,62 +1,27 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/auth.css";
 import { AuthContext } from "./AuthContext";
 import Spinner from "../Spinner";
 import ErrorModal from "../app/components/ErrorModal";
-import {
-  isStrongPassword,
-  isValidEmail,
-  isValidPhone,
-} from "../../utils/helpers";
 import WiXinput from "../app/components/WiXinput";
 import WiXPasswordInput from "../app/components/WiXPasswordInput";
+import { useAuthForm } from "../hooks/useAuthForm";
 
 function Signup() {
-  const [active, setActive] = useState(0);
   const [visible, setVisible] = useState(false);
-  const [tab, setTab] = useState({
-    type: "tel",
-    placeholder: "Enter phone number",
-  });
-  const [user, setUser] = useState({ password: "", email: "", phone: "" });
-  const [complete, setComplete] = useState(
-    (user.phone !== "" && user.password !== "") ||
-      (user.email !== "" && user.password !== "")
-  );
-  const switchTab = (index) => {
-    setActive(index);
-    setUser({ password: "", email: "", phone: "" });
-    if (index === 1) {
-      setTab({ type: "email", placeholder: "Enter email address" });
-    } else {
-      setTab({ type: "tel", placeholder: "Enter phone number" });
-    }
-  };
-  const updatePassword = (input) => {
-    setUser({ ...user, password: input });
-  };
-  const updatePhone = (input) => {
-    setUser({ ...user, phone: input });
-  };
-  const updateEmail = (input) => {
-    setUser({ ...user, email: input });
-  };
+  const {
+    active,
+    tab,
+    user,
+    complete,
+    switchTab,
+    updatePassword,
+    updatePhone,
+    updateEmail,
+  } = useAuthForm();
 
-  const { sendForm, loading, setLoading, info, setInfo } =
-    useContext(AuthContext);
-
-  // Dynamically calculate the `complete` state whenever the `user` object changes
-  useEffect(() => {
-    const isComplete =
-      (tab.type === "tel" &&
-        isValidPhone(user.phone) &&
-        isStrongPassword(user.password)) ||
-      (tab.type === "email" &&
-        isValidEmail(user.email) &&
-        isStrongPassword(user.password));
-    setComplete(isComplete);
-  }, [user, tab.type]);
+  const { sendForm, loading, info, setInfo } = useContext(AuthContext);
 
   return (
     <section className="auth">
@@ -74,6 +39,7 @@ function Signup() {
       <div className="tabs">
         {["Phone", "Email"].map((item, index) => (
           <button
+            key={item}
             className={index === active ? "active" : ""}
             onClick={() => switchTab(index)}
           >

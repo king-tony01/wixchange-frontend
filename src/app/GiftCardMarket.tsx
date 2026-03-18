@@ -1,54 +1,70 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SectionList from "./SectionList";
 import { TopBarIcons } from "../assets/icons/topBarIcons";
-import { cards } from "../../test";
-import { Link, useNavigate } from "react-router-dom";
 import EmptyList from "./components/EmptyList";
+import { useBackNavigation } from "../hooks/useBackNavigation";
+import { useGiftCards } from "../hooks/useGiftCards";
 function GiftCardMarket() {
   const [active, setActive] = useState(0);
-  const [back, setBack] = useState(false);
-  const navigate = useNavigate();
-  const filters = [
-    "Sports",
-    "Digital",
-    "Gaming",
-    "Experience",
-    "Travel",
-    "Entertainment",
-    "Restaurant",
-    "Retail",
+  const [query, setQuery] = useState("");
+  const goBack = useBackNavigation();
+  const { marketCards, categories } = useGiftCards();
+
+  const filters = categories.length > 0 ? categories : ["All"];
+  const activeFilter = filters[active] || "All";
+  const normalizedQuery = query.trim().toLowerCase();
+
+  const filteredCards = marketCards.filter((card) => {
+    const matchQuery =
+      normalizedQuery.length === 0 ||
+      card.name.toLowerCase().includes(normalizedQuery) ||
+      card.category.toLowerCase().includes(normalizedQuery);
+
+    const matchCategory =
+      activeFilter === "All" || card.category === activeFilter;
+
+    return matchQuery && matchCategory;
+  });
+
+  const list = [
+    {
+      title: `Available Cards (${filteredCards.length})`,
+      data: filteredCards,
+    },
   ];
 
-  useEffect(() => {
-    if (back) {
-      navigate(-1);
-    }
-  }, [navigate, back]);
   return (
-    <section className='gift-card-market'>
-      <header className='card-market-header'>
-        <button onClick={() => setBack(true)}>
-          <i className='fas fa-chevron-left'></i>
+    <section className="gift-card-market">
+      <header className="card-market-header">
+        <button onClick={goBack}>
+          <i className="fas fa-chevron-left"></i>
         </button>
         <h3>Buy a Gift Card</h3>
       </header>
-      <div className='market-body'>
-        <div className='search-bar'>
+      <div className="market-body">
+        <div className="search-bar">
           {TopBarIcons.search}
-          <input type='search' name='' id='' placeholder='Search brands' />
+          <input
+            type="search"
+            name="search"
+            id="giftcard-search"
+            placeholder="Search brands or categories"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
         </div>
-        <div className='filter'>
+        <div className="filter">
           {filters.map((filter, index) => (
             <button
               className={active === index ? "active" : ""}
-              key={index}
+              key={filter}
               onClick={() => setActive(index)}
             >
               {filter}
             </button>
           ))}
         </div>
-        {cards.length > 0 ? <SectionList list={cards} /> : <EmptyList />}
+        {filteredCards.length > 0 ? <SectionList list={list} /> : <EmptyList />}
       </div>
     </section>
   );

@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 
 function Card({ card }) {
   return (
-    <Link to={`/services/gift-card/details`}>
+    <Link to={`/services/gift-card/details/${card.id}`}>
       <div className="card">
         <img
           src={
+            card.image ||
             "https://www.mygiftcardsupply.com/wp-content/uploads/2022/01/amazon-gift-card.png"
           }
-          alt=""
+          alt={`${card.name} card`}
         />
         <p>{card.name}</p>
         <b>

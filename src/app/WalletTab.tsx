@@ -37,7 +37,7 @@ import { HomeContext } from "../contexts/HomeContext";
 function WalletTab() {
   const { transactions, userInfo } = useContext(HomeContext);
 
-  if (!transactions && !userInfo) {
+  if (!userInfo) {
     return <LoadingPage />;
   }
 
@@ -55,8 +55,11 @@ function WalletTab() {
       </div>
       <h3>History</h3>
       {(transactions.length > 0 &&
-        transactions.map((transaction, index) => (
-          <TransactionCard transaction={transaction} />
+        transactions.map((transaction) => (
+          <TransactionCard
+            key={transaction.id ?? transaction.dateCreated}
+            transaction={transaction}
+          />
         ))) || <EmptyTransactions />}
     </section>
   );

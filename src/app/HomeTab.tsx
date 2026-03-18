@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import "../css/hometab.css";
 import "../css/cards.css";
 import "../css/services.css";
@@ -7,16 +7,13 @@ import "../css/giftcards.css";
 import "../css/menu.css";
 import WalletCard from "./WalletCard";
 import QuickActions from "./QuickActions";
-import CardsList from "./CardsList";
 import Grid from "./Grid";
 import { cards } from "../../test";
 import { TopBarIcons } from "../assets/icons/topBarIcons";
-import { AuthContext } from "../auth/AuthContext";
-import { baseUrl, TEST_API_TOKEN, vtuUrl } from "../assets/urls";
 import LoadingPage from "./components/LoadingPage";
 import { HomeContext } from "../contexts/HomeContext";
 function HomeTab() {
-  const { userInfo, vtuList } = useContext(HomeContext);
+  const { userInfo } = useContext(HomeContext);
 
   if (!userInfo) {
     return <LoadingPage />;
@@ -47,9 +44,13 @@ function HomeTab() {
           </div>
         </div>
         <div className="header-right">
-          <Link>{TopBarIcons.search}</Link>
-          <Link>{TopBarIcons.cart}</Link>
-          <Link>
+          <Link to="#" onClick={(e) => e.preventDefault()}>
+            {TopBarIcons.search}
+          </Link>
+          <Link to="#" onClick={(e) => e.preventDefault()}>
+            {TopBarIcons.cart}
+          </Link>
+          <Link to="#" onClick={(e) => e.preventDefault()}>
             {TopBarIcons.bell}
             <span className="notice">2</span>
           </Link>

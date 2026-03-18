@@ -5,9 +5,9 @@ function SectionList({ list }) {
   return (
     <div className="section-list">
       {list.map((section, index) => (
-        <div className="section">
+        <div className="section" key={section.title ?? index}>
           <h4>{section.title}</h4>
-          <Grid type={"cards"} key={index + 1} list={section.data} />
+          <Grid type={"cards"} list={section.data} />
         </div>
       ))}
     </div>

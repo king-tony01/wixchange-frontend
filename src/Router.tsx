@@ -68,7 +68,7 @@ const router = createBrowserRouter([
         element: <ListNewCard />,
       },
       {
-        path: "/services/gift-card/details",
+        path: "/services/gift-card/details/:cardId",
         element: <CardDetails />,
       },
       {

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 import { ServicesIcons } from "../assets/icons/servicesIcons";
 function Services() {
-  const { billsAPI, PK } = useContext(AuthContext);
+  const { PK } = useContext(AuthContext);
   const services = [
     {
       title: "VTU Services",
@@ -44,7 +44,7 @@ function Services() {
               Authorization: `Bearer ${PK}`,
               "Content-Type": "application/json", // Adjust as necessary
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -64,8 +64,8 @@ function Services() {
   return (
     <section className="services">
       <h1>Services</h1>
-      {services.map((service, index) => (
-        <Link to={service.path} className="service-card">
+      {services.map((service) => (
+        <Link key={service.path} to={service.path} className="service-card">
           <div>
             {service.icon}
             <b>{service.title}</b>

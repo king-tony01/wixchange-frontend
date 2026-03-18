@@ -1,51 +1,127 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { cards } from "../../test";
+import React from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import SectionList from "./SectionList";
+import { useBackNavigation } from "../hooks/useBackNavigation";
+import { useGiftCards } from "../hooks/useGiftCards";
+
+function formatMoney(amount) {
+  return Number(amount).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+}
+
 function CardDetails() {
-  const [back, setBack] = useState(false);
+  const goBack = useBackNavigation();
   const navigate = useNavigate();
-  useEffect(() => {
-    if (back) {
-      navigate(-1);
+  const { cardId } = useParams();
+  const { getCardById, marketCards, addToCart, startCheckout, cart } =
+    useGiftCards();
+  const card = getCardById(cardId);
+
+  if (!card) {
+    return (
+      <section className="card-details">
+        <header className="card-market-header">
+          <button onClick={goBack}>
+            <i className="fas fa-chevron-left"></i>
+          </button>
+          <h3>Card Details</h3>
+        </header>
+        <div style={{ padding: 15 }}>
+          <p style={{ color: "var(--light-white)", marginBottom: 8 }}>
+            This gift card is no longer available.
+          </p>
+          <Link to="/services/gift-card/marketplace">Back to marketplace</Link>
+        </div>
+      </section>
+    );
+  }
+
+  const relatedCards = marketCards
+    .filter((item) => item.id !== card.id && item.name === card.name)
+    .slice(0, 4);
+
+  const relatedSection =
+    relatedCards.length > 0
+      ? [
+          {
+            title: "More from this seller",
+            data: relatedCards,
+          },
+        ]
+      : [];
+
+  const discountPercent =
+    card.price > 0 ? Math.round((card.discount / card.price) * 100) : 0;
+
+  const handleAddToCart = () => {
+    addToCart(card.id);
+  };
+
+  const handleBuyNow = () => {
+    const response = startCheckout(card.id);
+    if (response.ok) {
+      navigate("/services/gift-card/checkout");
     }
-  }, [navigate, back]);
-  const more = cards[0];
-  more.title = "More from this seller";
+  };
+
+  const isInCart = cart.some((item) => item.id === card.id);
+
   return (
     <section className="card-details">
       <header className="card-market-header">
-        <button onClick={() => setBack(true)}>
+        <button onClick={goBack}>
           <i className="fas fa-chevron-left"></i>
         </button>
         <h3>Card Details</h3>
       </header>
       <div className="details-hero">
-        <img src="" alt="" />
+        <img src={card.image} alt={`${card.name} gift card`} />
         <div>
-          <p>Amazon</p>
+          <p>{card.name}</p>
           <small>
-            Card value: <span>$25.00</span>
+            Card value: <span>{formatMoney(card.value)}</span>
           </small>
           <small>
-            Selling price: <span>$25.00</span>
+            Selling price: <span>{formatMoney(card.price)}</span>
           </small>
           <small>
-            Discount: <span>$10.00 50% OFF</span>
+            Discount:{" "}
+            <span>
+              {formatMoney(card.discount)} {discountPercent}% OFF
+            </span>
           </small>
         </div>
       </div>
       <div className="details-action">
-        <Link to={`/services/gift-card/checkout`}>Buy Now</Link>
-        <Link aria-disabled={true}>Add to Cart</Link>
+        <Link
+          to="/services/gift-card/checkout"
+          onClick={(e) => {
+            e.preventDefault();
+            handleBuyNow();
+          }}
+        >
+          Buy Now
+        </Link>
+        <Link
+          to="#"
+          onClick={(e) => {
+            e.preventDefault();
+            handleAddToCart();
+          }}
+          aria-disabled={isInCart}
+        >
+          {isInCart ? "Added" : "Add to Cart"}
+        </Link>
       </div>
       <div className="seller-info">
         <h4>Seller info</h4>
         <div className="seller-card">
           <div className="card-top">
-            <img src="" alt="" />
+            <img src={card.image} alt={`${card.sellerName} avatar`} />
             <div>
-              <p>Mark Henry Technologies</p>
+              <p>{card.sellerName}</p>
               <div className="stars">
                 <i className="fas fa-star"></i>
                 <i className="fas fa-star"></i>
@@ -56,17 +132,19 @@ function CardDetails() {
           </div>
           <div className="card-bottom">
             <small>
-              <i className="fas fa-phone"></i> +234 123 123 1234
+              <i className="fas fa-phone"></i> {card.sellerPhone}
             </small>
             <small>
-              <i className="fas fa-envelope"></i> marktechnologies@gmail.com
+              <i className="fas fa-envelope"></i> {card.sellerEmail}
             </small>
           </div>
         </div>
       </div>
-      <div style={{ padding: 15 }}>
-        <SectionList list={[more]} />
-      </div>
+      {relatedSection.length > 0 ? (
+        <div style={{ padding: 15 }}>
+          <SectionList list={relatedSection} />
+        </div>
+      ) : null}
     </section>
   );
 }
