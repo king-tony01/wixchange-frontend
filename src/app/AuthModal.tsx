@@ -32,12 +32,11 @@ function AuthModal() {
       setError("");
       const checkPin = async () => {
         try {
-          const token = localStorage.getItem("wix_token");
           const response = await fetch(`${baseUrl}/api/pin/verify`, {
             method: "POST",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ pin: +pinInput }),
           });

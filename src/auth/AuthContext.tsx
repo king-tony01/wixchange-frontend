@@ -10,7 +10,6 @@ function AuthProvider({ children }) {
   const [loggedIn, setLoggedin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("wix_token"));
   const [info, setInfo] = useState({
     className: "",
     title: "",
@@ -20,15 +19,31 @@ function AuthProvider({ children }) {
   });
   const navigate = useNavigate();
 
-  // Check if user is logged in based on token
+  // Check if user is logged in by attempting to access a protected route
   useEffect(() => {
-    const storedToken = localStorage.getItem("wix_token");
-    if (storedToken) {
-      setToken(storedToken);
-      setLoggedin(true);
-    } else {
-      setLoggedin(false);
-    }
+    const checkAuthStatus = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/api/user/overview`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserData(data.user || data);
+          setLoggedin(true);
+        } else {
+          setLoggedin(false);
+        }
+      } catch (err) {
+        setLoggedin(false);
+      }
+    };
+
+    checkAuthStatus();
   }, []);
 
   const sendForm = async (event, user, endpoint) => {
@@ -51,6 +66,7 @@ function AuthProvider({ children }) {
       const response = await fetch(`${baseUrl}${endpoint}`, {
         mode: "cors",
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -59,11 +75,8 @@ function AuthProvider({ children }) {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        if (data.stat && data.token) {
-          // Store token in localStorage
-          localStorage.setItem("wix_token", data.token);
-          localStorage.setItem("wix_user", JSON.stringify({ ...data.user }));
-          setToken(data.token);
+        if (data.stat && data.user) {
+          // Token is now stored in HttpOnly cookie automatically
           setUserData(data.user);
           setLoggedin(true);
           setLoading(false);
@@ -104,20 +117,29 @@ function AuthProvider({ children }) {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem("wix_token");
-    localStorage.removeItem("wix_user");
-    setToken(null);
-    setLoggedin(false);
-    setUserData(null);
-    navigate("/login");
+  const logout = async () => {
+    try {
+      await fetch(`${baseUrl}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      console.error("Logout error:", err);
+    } finally {
+      setLoggedin(false);
+      setUserData(null);
+      navigate("/login");
+    }
   };
 
   useEffect(() => {
-    if (!loggedIn && !token) {
+    if (!loggedIn) {
       navigate("/login");
     }
-  }, [loggedIn, token, navigate]);
+  }, [loggedIn, navigate]);
 
   return (
     <AuthContext.Provider
@@ -131,7 +153,6 @@ function AuthProvider({ children }) {
         info,
         setInfo,
         userData,
-        token,
         logout,
       }}
     >

@@ -11,12 +11,11 @@ export const HomeContext = createContext({
 
 function HomeProvider({ children }) {
   const navigate = useNavigate();
-  const token = localStorage.getItem("wix_token");
   const redirectToLogin = useCallback(() => {
     navigate("/login");
   }, [navigate]);
 
-  const { userInfo, transactions } = useDashboardData(token, redirectToLogin);
+  const { userInfo, transactions } = useDashboardData(redirectToLogin);
   const vtuList = useVtuServices();
 
   return (

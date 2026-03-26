@@ -1,25 +1,17 @@
 import { useEffect, useState } from "react";
 import { baseUrl } from "../assets/urls";
 
-export function useDashboardData(
-  token: string | null,
-  onUnauthorized: () => void,
-) {
+export function useDashboardData(onUnauthorized: () => void) {
   const [userInfo, setUserInfo] = useState(null);
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    if (!token) {
-      onUnauthorized();
-      return;
-    }
-
     async function dashboard() {
       try {
         const response = await fetch(`${baseUrl}/api/user/overview`, {
           mode: "cors",
+          credentials: "include",
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
@@ -44,7 +36,7 @@ export function useDashboardData(
     }
 
     dashboard();
-  }, [token, onUnauthorized]);
+  }, [onUnauthorized]);
 
   return { userInfo, transactions };
 }
