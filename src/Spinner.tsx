@@ -1,9 +1,16 @@
 import React from "react";
 
-function Spinner() {
+interface SpinnerProps {
+  size?: number;
+}
+
+function Spinner({ size = 30 }: SpinnerProps) {
   return (
     <div>
-      <span className="spinner"></span>
+      <span
+        className="spinner"
+        style={{ width: `${size}px`, height: `${size}px` }}
+      ></span>
     </div>
   );
 }

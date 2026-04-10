@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useBackNavigation } from "../hooks/useBackNavigation";
 import { useGiftCards } from "../hooks/useGiftCards";
+import ErrorModal from "./components/ErrorModal";
+import WiXButton from "./components/WiXButton";
 import WiXinput from "./components/WiXinput";
 import WiXSelect from "./components/WiXSelect";
 
 function ListNewCard() {
   const goBack = useBackNavigation();
+  const navigate = useNavigate();
   const { listCard } = useGiftCards();
   const brands = [
     {
@@ -79,54 +82,123 @@ function ListNewCard() {
     pin: "",
     value: "",
     price: "",
-    discountPercent: "0",
+    discountPercent: "",
   });
   const [agreed, setAgreed] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [info, setInfo] = useState({
+    className: "",
+    title: "",
+    message: "",
+    icon: "",
+    active: false,
+  });
+  const [loading, setLoading] = useState(false);
+
+  const canSubmit =
+    agreed &&
+    form.name.trim() !== "" &&
+    form.category.trim() !== "" &&
+    form.cardNumber.trim() !== "" &&
+    form.pin.trim() !== "" &&
+    form.value.trim() !== "" &&
+    Number(form.value) >= 1 &&
+    form.price.trim() !== "" &&
+    Number(form.price) >= 1;
 
   const updateField = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setMessage("");
-    setError("");
+  const handleSubmit = () => {
+    if (!canSubmit || loading) {
+      return;
+    }
+
+    setInfo((prev) => ({ ...prev, active: false }));
 
     if (!agreed) {
-      setError("You must agree to terms and conditions before submitting.");
+      setInfo({
+        className: "warning",
+        title: "Terms Required",
+        message: "You must agree to terms and conditions before submitting.",
+        icon: "exclamation-triangle",
+        active: true,
+      });
       return;
     }
 
-    const result = listCard(form);
-    if (!result.ok) {
-      setError(result.message);
-      return;
-    }
+    setLoading(true);
 
-    setMessage(result.message);
-    setForm({
-      name: "",
-      category: "Digital",
-      cardNumber: "",
-      pin: "",
-      value: "",
-      price: "",
-      discountPercent: "",
-    });
-    setAgreed(false);
+    try {
+      const result = listCard(form);
+      if (!result.ok) {
+        setInfo({
+          className: "error",
+          title: "Listing Failed",
+          message: result.message,
+          icon: "xmark-circle",
+          active: true,
+        });
+        return;
+      }
+
+      setInfo({
+        className: "success",
+        title: "Listed Successfully",
+        message: result.message,
+        icon: "check-circle",
+        active: true,
+      });
+      setForm({
+        name: "",
+        category: "Digital",
+        cardNumber: "",
+        pin: "",
+        value: "",
+        price: "",
+        discountPercent: "",
+      });
+      setAgreed(false);
+
+      const listedCardId = result.listedCardId;
+      if (!listedCardId) {
+        setInfo({
+          className: "warning",
+          title: "Listed, But Not Opened",
+          message: "Card listed, but failed to open details.",
+          icon: "exclamation-triangle",
+          active: true,
+        });
+        return;
+      }
+
+      navigate(`/services/gift-card/details/${listedCardId}?readonly=1`, {
+        state: { readOnly: true, source: "listing" },
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <section className="list-new">
+      {info.active ? (
+        <ErrorModal
+          message={info.message}
+          title={info.title}
+          icon={info.icon}
+          className={info.className}
+          state={info.active}
+          action={setInfo}
+        />
+      ) : null}
       <header className="card-market-header">
         <button onClick={goBack}>
           <i className="fas fa-chevron-left"></i>
         </button>
         <h3>Buy a Gift Card</h3>
       </header>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(event) => event.preventDefault()}>
         <div className="input-wrapper">
           <p>Brand</p>
           <WiXSelect
@@ -243,23 +315,18 @@ function ListNewCard() {
             for listing a gift card on WiXchange.
           </small>
         </div>
-        {error ? (
-          <small
-            style={{ color: "#ef4444", display: "block", padding: "0 15px" }}
+        <div className="submit-btn">
+          <WiXButton
+            type="button"
+            variant="primary"
+            fullWidth
+            loading={loading}
+            disabled={!canSubmit}
+            onClick={handleSubmit}
           >
-            {error}
-          </small>
-        ) : null}
-        {message ? (
-          <small
-            style={{ color: "#22c55e", display: "block", padding: "0 15px" }}
-          >
-            {message}
-          </small>
-        ) : null}
-        <button type="submit" className="main-btn">
-          Submit
-        </button>
+            Submit
+          </WiXButton>
+        </div>
       </form>
     </section>
   );

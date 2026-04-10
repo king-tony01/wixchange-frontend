@@ -436,15 +436,8 @@
     text-decoration: underline;
   }
 
-  .list-new .main-btn {
-    display: block;
-    text-align: center;
-    padding: 15px;
-    width: 93%;
-    color: var(--light-white);
-    border-radius: 10px;
-    background: var(--primary-button);
-    margin: 20px auto;
+  .submit-btn {
+    padding: 0 1rem;
   }
 
   .brands-con {

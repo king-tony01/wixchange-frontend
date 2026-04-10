@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import SectionList from "./SectionList";
 import { useBackNavigation } from "../hooks/useBackNavigation";
 import { useGiftCards } from "../hooks/useGiftCards";
@@ -14,10 +14,14 @@ function formatMoney(amount) {
 function CardDetails() {
   const goBack = useBackNavigation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { cardId } = useParams();
   const { getCardById, marketCards, addToCart, startCheckout, cart } =
     useGiftCards();
   const card = getCardById(cardId);
+  const searchParams = new URLSearchParams(location.search);
+  const readOnlyMode =
+    location.state?.readOnly === true || searchParams.get("readonly") === "1";
 
   if (!card) {
     return (
@@ -94,27 +98,29 @@ function CardDetails() {
           </small>
         </div>
       </div>
-      <div className="details-action">
-        <Link
-          to="/services/gift-card/checkout"
-          onClick={(e) => {
-            e.preventDefault();
-            handleBuyNow();
-          }}
-        >
-          Buy Now
-        </Link>
-        <Link
-          to="#"
-          onClick={(e) => {
-            e.preventDefault();
-            handleAddToCart();
-          }}
-          aria-disabled={isInCart}
-        >
-          {isInCart ? "Added" : "Add to Cart"}
-        </Link>
-      </div>
+      {!readOnlyMode ? (
+        <div className="details-action">
+          <Link
+            to="/services/gift-card/checkout"
+            onClick={(e) => {
+              e.preventDefault();
+              handleBuyNow();
+            }}
+          >
+            Buy Now
+          </Link>
+          <Link
+            to="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleAddToCart();
+            }}
+            aria-disabled={isInCart}
+          >
+            {isInCart ? "Added" : "Add to Cart"}
+          </Link>
+        </div>
+      ) : null}
       <div className="seller-info">
         <h4>Seller info</h4>
         <div className="seller-card">

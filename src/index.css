@@ -55,7 +55,7 @@ body {
   width: 30px;
   height: 30px;
   display: inline-block;
-  border: 5px solid transparent;
+  border: 4px solid transparent;
   border-radius: 50%;
   border-top-color: var(--light-white);
   border-left-color: var(--light-white);

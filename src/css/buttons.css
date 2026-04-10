@@ -1,0 +1,58 @@
+.wix-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	min-height: 4rem;
+	padding: 1rem 2rem;
+	border: none;
+	border-radius: 0.7rem;
+	color: var(--light-white);
+	font-size: 1rem;
+	font-weight: 500;
+	transition: transform 0.15s ease, opacity 0.15s ease, background 0.15s ease;
+}
+
+.wix-button:active {
+	transform: scale(0.99);
+}
+
+.wix-button--primary {
+	background: var(--primary-button);
+}
+
+.wix-button--secondary {
+	background: var(--secondary);
+}
+
+.wix-button--ghost {
+	background: transparent;
+	border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.wix-button--full {
+	width: 100%;
+}
+
+.wix-button.is-disabled,
+.wix-button:disabled {
+	background: var(--disabled);
+	opacity: 0.8;
+	cursor: not-allowed;
+	transform: none;
+}
+
+.wix-button-spinner {
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	border: 2px solid rgba(255, 255, 255, 0.35);
+	border-top-color: var(--light-white);
+	animation: wix-button-spin 0.8s linear infinite;
+}
+
+@keyframes wix-button-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}

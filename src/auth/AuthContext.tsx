@@ -7,7 +7,7 @@ import {
   type ReactNode,
   type SetStateAction,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { baseUrl } from "../assets/urls";
 interface AuthInfoState {
   className: string;
@@ -25,6 +25,7 @@ interface AuthFormUser {
 
 interface AuthContextValue {
   loggedIn: boolean;
+  authChecking: boolean;
   sendForm: (
     event: React.MouseEvent<HTMLElement>,
     user: AuthFormUser,
@@ -59,6 +60,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const billsAPI =
     "https://sandbox.payscribe.ng/api/v1//bouquets/?service=dstv";
   const [loggedIn, setLoggedin] = useState(false);
+  const [authChecking, setAuthChecking] = useState(true);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   const [info, setInfo] = useState({
@@ -69,6 +71,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     active: false,
   });
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Check if user is logged in by attempting to access a protected route
   useEffect(() => {
@@ -91,6 +94,8 @@ function AuthProvider({ children }: { children: ReactNode }) {
         }
       } catch (err) {
         setLoggedin(false);
+      } finally {
+        setAuthChecking(false);
       }
     };
 
@@ -188,15 +193,23 @@ function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    if (!loggedIn) {
+    if (authChecking) {
+      return;
+    }
+
+    const isPublicRoute =
+      location.pathname === "/login" || location.pathname === "/signup";
+
+    if (!loggedIn && !isPublicRoute) {
       navigate("/login");
     }
-  }, [loggedIn, navigate]);
+  }, [authChecking, loggedIn, location.pathname, navigate]);
 
   return (
     <AuthContext.Provider
       value={{
         loggedIn,
+        authChecking,
         sendForm,
         loading,
         setLoading,

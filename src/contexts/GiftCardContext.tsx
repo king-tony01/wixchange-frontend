@@ -29,6 +29,7 @@ const FALLBACK_CONTEXT = {
   listCard: (_payload) => ({
     ok: false,
     message: "Gift card store unavailable.",
+    listedCardId: null,
   }),
 };
 
@@ -202,27 +203,43 @@ function GiftCardProvider({ children }) {
     const discountPercent = Number(payload.discountPercent || 0);
 
     if (!payload.name.trim()) {
-      return { ok: false, message: "Brand is required." };
+      return { ok: false, message: "Brand is required.", listedCardId: null };
     }
 
     if (!payload.cardNumber.trim() || payload.cardNumber.trim().length < 6) {
-      return { ok: false, message: "Card number is invalid." };
+      return {
+        ok: false,
+        message: "Card number is invalid.",
+        listedCardId: null,
+      };
     }
 
     if (!payload.pin.trim() || payload.pin.trim().length < 4) {
-      return { ok: false, message: "Card PIN is invalid." };
+      return { ok: false, message: "Card PIN is invalid.", listedCardId: null };
     }
 
     if (Number.isNaN(cardValue) || cardValue <= 0) {
-      return { ok: false, message: "Card value must be greater than zero." };
+      return {
+        ok: false,
+        message: "Card value must be greater than zero.",
+        listedCardId: null,
+      };
     }
 
     if (Number.isNaN(cardPrice) || cardPrice <= 0) {
-      return { ok: false, message: "Selling price must be greater than zero." };
+      return {
+        ok: false,
+        message: "Selling price must be greater than zero.",
+        listedCardId: null,
+      };
     }
 
     if (discountPercent < 0 || discountPercent > 100) {
-      return { ok: false, message: "Discount must be between 0 and 100." };
+      return {
+        ok: false,
+        message: "Discount must be between 0 and 100.",
+        listedCardId: null,
+      };
     }
 
     const discount = Number(((cardPrice * discountPercent) / 100).toFixed(2));
@@ -252,6 +269,7 @@ function GiftCardProvider({ children }) {
     return {
       ok: true,
       message: "Gift card listed successfully.",
+      listedCardId: newCard.id,
       card: newCard,
     };
   };
