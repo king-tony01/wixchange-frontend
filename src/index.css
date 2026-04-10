@@ -10,6 +10,7 @@
   --card-dark: #343131;
   --text: #bcbcbc;
   --primary-button: linear-gradient(137deg, #d8a25e, #a04747);
+  --placeholder: #727272;
 }
 
 * {
@@ -19,6 +20,11 @@
   font-family: "Poppins", sans-serif;
   outline: none;
   border: none;
+}
+
+html{
+  scroll-behavior: smooth;
+  font-size: 80%;
 }
 body {
   background: var(--bg);

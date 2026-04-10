@@ -1,41 +1,143 @@
-import React, { useEffect, useState } from "react";
-import { isValidEmail, isValidPhone } from "../../../utils/helpers";
+import React, { useMemo, useState } from "react";
+import {
+  isStrongPassword,
+  isValidEmail,
+  isValidPhone,
+} from "../../../utils/helpers";
 
-function WiXinput({ tab, user, updatePhone, updateEmail }) {
+type WiXInputType =
+  | "text"
+  | "email"
+  | "tel"
+  | "password"
+  | "number"
+  | "search"
+  | "url";
+
+interface WiXinputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type" | "value" | "onChange" | "placeholder"
+> {
+  type?: WiXInputType;
+  value: string;
+  onValueChange: (value: string) => void;
+  placeholder: string;
+  icon?: string;
+  validate?: (value: string) => boolean;
+  errorMessage?: string;
+  trailingIconClassName?: string;
+  onTrailingIconClick?: () => void;
+  containerClassName?: string;
+  inputClassName?: string;
+  tooltipClassName?: string;
+}
+
+const DEFAULT_ICONS: Record<WiXInputType, string> = {
+  text: "pen",
+  email: "envelope",
+  tel: "phone",
+  password: "key",
+  number: "hashtag",
+  search: "search",
+  url: "link",
+};
+
+function WiXinput({
+  type = "text",
+  value,
+  onValueChange,
+  placeholder,
+  icon,
+  validate,
+  errorMessage,
+  trailingIconClassName,
+  onTrailingIconClick,
+  containerClassName = "",
+  inputClassName = "",
+  tooltipClassName = "",
+  id,
+  name,
+  className,
+  required,
+  onBlur,
+  onFocus,
+  ...rest
+}: WiXinputProps) {
   const [touched, setTouched] = useState(false);
   const [active, setActive] = useState(false);
 
-  const isValid =
-    tab.type === "tel" ? isValidPhone(user.phone) : isValidEmail(user.email);
-  const currentValue = tab.type === "tel" ? user.phone : user.email;
-  const shouldShowError = touched && (!currentValue || !isValid);
+  const isValid = useMemo(() => {
+    if (validate) {
+      return validate(value);
+    }
+
+    if (type === "email") {
+      return isValidEmail(value);
+    }
+
+    if (type === "tel") {
+      return isValidPhone(value);
+    }
+
+    if (type === "password") {
+      return isStrongPassword(value);
+    }
+
+    return value.trim().length > 0;
+  }, [type, validate, value]);
+
+  const shouldShowError =
+    touched && (required !== false ? !value || !isValid : !isValid);
+  const resolvedIcon = icon || DEFAULT_ICONS[type] || "pen";
+  const resolvedErrorMessage =
+    errorMessage ||
+    (type === "tel"
+      ? "Phone is invalid!"
+      : type === "email"
+        ? "Email is invalid!"
+        : type === "password"
+          ? "Password is invalid!"
+          : "This field is invalid!");
+
+  const handleBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
+    setActive(false);
+    setTouched(true);
+    onBlur?.(event);
+  };
+
+  const handleFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
+    setActive(true);
+    onFocus?.(event);
+  };
 
   return (
-    <div className={`input ${shouldShowError ? "incorrect" : ""}`}>
-      <i className={`fas fa-${tab.type === "tel" ? "phone" : "envelope"}`}></i>
+    <div
+      className={`input ${shouldShowError ? "incorrect" : ""} ${containerClassName}`.trim()}
+    >
+      <i className={`fas fa-${resolvedIcon}`}></i>
       <input
-        type={tab.type}
-        name=""
-        id="phone"
-        placeholder={tab.placeholder}
-        value={currentValue}
-        onBlur={() => {
-          setActive(false);
-          setTouched(true);
-        }}
-        onFocus={() => {
-          setActive(true);
-        }}
-        onInput={(e) =>
-          tab.type === "tel"
-            ? updatePhone(e.target.value)
-            : updateEmail(e.target.value)
-        }
+        {...rest}
+        id={id || name || type}
+        name={name || id || type}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        className={`${className || ""} ${inputClassName}`.trim()}
+        aria-invalid={shouldShowError}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
+        onChange={(event) => onValueChange(event.target.value)}
       />
+      {trailingIconClassName ? (
+        <i
+          className={trailingIconClassName}
+          onClick={onTrailingIconClick}
+          style={{ cursor: onTrailingIconClick ? "pointer" : "default" }}
+        ></i>
+      ) : null}
       {active && shouldShowError ? (
-        <div className="tooltip">
-          <i className="fas fa-close"></i>{" "}
-          <small>{tab.type === "tel" ? "Phone" : "Email"} is invalid!</small>
+        <div className={`tooltip ${tooltipClassName}`.trim()}>
+          <i className="fas fa-close"></i> <small>{resolvedErrorMessage}</small>
         </div>
       ) : null}
     </div>

@@ -369,17 +369,6 @@
     margin-bottom: 5px;
   }
 
-  .list-new .input-wrapper input {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    color: var(--light-white);
-    background: var(--card-dark);
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
   .agree-section {
     margin: 10px 0;
     padding: 0 15px;

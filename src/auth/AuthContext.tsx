@@ -1,15 +1,66 @@
-import { createContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../assets/urls";
-export const AuthContext = createContext();
+interface AuthInfoState {
+  className: string;
+  title: string;
+  message: string;
+  icon: string;
+  active: boolean;
+}
 
-function AuthProvider({ children }) {
+interface AuthFormUser {
+  email?: string;
+  phone?: string;
+  password: string;
+}
+
+interface AuthContextValue {
+  loggedIn: boolean;
+  sendForm: (
+    event: React.MouseEvent<HTMLElement>,
+    user: AuthFormUser,
+    endpoint: string,
+  ) => Promise<void>;
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  PK: string;
+  billsAPI: string;
+  info: AuthInfoState;
+  setInfo: Dispatch<SetStateAction<AuthInfoState>>;
+  userData: any;
+  logout: () => Promise<void>;
+}
+
+export const AuthContext = createContext<AuthContextValue | undefined>(
+  undefined,
+);
+
+export function useAuthContext(): AuthContextValue {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuthContext must be used within an AuthProvider");
+  }
+
+  return context;
+}
+
+function AuthProvider({ children }: { children: ReactNode }) {
   const PK = "ps_pk_test_EjH78aAljllbl9Pr0hXX3QxRzHHKJW";
   const billsAPI =
     "https://sandbox.payscribe.ng/api/v1//bouquets/?service=dstv";
   const [loggedIn, setLoggedin] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<any>(null);
   const [info, setInfo] = useState({
     className: "",
     title: "",
@@ -46,12 +97,13 @@ function AuthProvider({ children }) {
     checkAuthStatus();
   }, []);
 
-  const sendForm = async (event, user, endpoint) => {
+  const sendForm = async (
+    event: React.MouseEvent<HTMLElement>,
+    user: AuthFormUser,
+    endpoint: string,
+  ) => {
     event.preventDefault();
-    if (
-      (user.password === "" && user.email === "") ||
-      (user.password === "" && user.phone === "")
-    ) {
+    if (user.password === "" || (user.email === "" && user.phone === "")) {
       setInfo({
         className: "warning",
         title: "Incomplete Input!",

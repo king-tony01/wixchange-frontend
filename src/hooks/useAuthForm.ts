@@ -5,6 +5,8 @@ import {
   isValidPhone,
 } from "../../utils/helpers";
 
+const PHONE_AUTH_ENABLED = false;
+
 const EMPTY_USER: AuthUser = {
   password: "",
   email: "",
@@ -14,8 +16,10 @@ const EMPTY_USER: AuthUser = {
 export function useAuthForm() {
   const [active, setActive] = useState(0);
   const [tab, setTab] = useState<AuthTab>({
-    type: "tel",
-    placeholder: "Enter phone number",
+    type: PHONE_AUTH_ENABLED ? "tel" : "email",
+    placeholder: PHONE_AUTH_ENABLED
+      ? "Enter phone number"
+      : "Enter email address",
   });
   const [user, setUser] = useState<AuthUser>(EMPTY_USER);
 

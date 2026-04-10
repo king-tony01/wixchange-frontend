@@ -2,12 +2,76 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useBackNavigation } from "../hooks/useBackNavigation";
 import { useGiftCards } from "../hooks/useGiftCards";
+import WiXinput from "./components/WiXinput";
+import WiXSelect from "./components/WiXSelect";
 
 function ListNewCard() {
   const goBack = useBackNavigation();
   const { listCard } = useGiftCards();
-  const brands = ["Amazon", "Walmart", "Target", "Apple", "Xbox", "Steam"];
-  const categories = ["Digital", "Gaming", "Entertainment", "Retail"];
+  const brands = [
+    {
+      label: "Amazon",
+      value: "Amazon",
+      description: "Gift cards, digital codes, and store credit.",
+      icon: "bag-shopping",
+    },
+    {
+      label: "Walmart",
+      value: "Walmart",
+      description: "Retail credit and physical store vouchers.",
+      icon: "cart-shopping",
+    },
+    {
+      label: "Target",
+      value: "Target",
+      description: "Popular retail gift cards and vouchers.",
+      icon: "bullseye",
+    },
+    {
+      label: "Apple",
+      value: "Apple",
+      description: "App Store, iTunes, and Apple credit.",
+      icon: "apple-whole",
+    },
+    {
+      label: "Xbox",
+      value: "Xbox",
+      description: "Gaming credit and redeemable store cards.",
+      icon: "gamepad",
+    },
+    {
+      label: "Steam",
+      value: "Steam",
+      description: "PC gaming wallet top-ups and gift cards.",
+      icon: "steam",
+    },
+  ];
+  const categories = [
+    {
+      label: "Digital",
+      value: "Digital",
+      description: "Gift codes, vouchers, and instant delivery cards.",
+      icon: "bolt",
+    },
+    {
+      label: "Gaming",
+      value: "Gaming",
+      description: "Console, PC, and platform game cards.",
+      icon: "gamepad",
+    },
+    {
+      label: "Entertainment",
+      value: "Entertainment",
+      description: "Streaming, media, and subscription cards.",
+      icon: "film",
+    },
+    {
+      label: "Retail",
+      value: "Retail",
+      description: "Store credit for shopping and essentials.",
+      icon: "shopping-bag",
+    },
+  ];
   const [form, setForm] = useState({
     name: "",
     category: "Digital",
@@ -49,7 +113,7 @@ function ListNewCard() {
       pin: "",
       value: "",
       price: "",
-      discountPercent: "0",
+      discountPercent: "",
     });
     setAgreed(false);
   };
@@ -65,93 +129,97 @@ function ListNewCard() {
       <form onSubmit={handleSubmit}>
         <div className="input-wrapper">
           <p>Brand</p>
-          <input
-            type="text"
-            placeholder="Select brand"
+          <WiXSelect
             value={form.name}
-            onChange={(event) => updateField("name", event.target.value)}
+            onValueChange={(value) => updateField("name", value)}
+            options={brands}
+            placeholder="Select brand"
+            icon="tag"
+            searchable
+            containerClassName="gift-select brand-select"
+            triggerClassName="gift-select-trigger"
+            menuClassName="gift-select-menu"
+            optionClassName="gift-select-option"
           />
-          <div className="brands-con">
-            {brands.map((brand) => (
-              <span key={brand} onClick={() => updateField("name", brand)}>
-                {brand}
-              </span>
-            ))}
-          </div>
         </div>
 
         <div className="input-wrapper">
           <p>Category</p>
-          <select
+          <WiXSelect
             value={form.category}
-            onChange={(event) => updateField("category", event.target.value)}
-            style={{
-              display: "block",
-              width: "100%",
-              padding: 10,
-              color: "var(--light-white)",
-              background: "var(--card-dark)",
-              borderRadius: 5,
-            }}
-          >
-            {categories.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
+            onValueChange={(value) => updateField("category", value)}
+            options={categories}
+            placeholder="Select category"
+            icon="layer-group"
+            searchable={false}
+            containerClassName="gift-select"
+            triggerClassName="gift-select-trigger"
+            menuClassName="gift-select-menu"
+            optionClassName="gift-select-option"
+          />
         </div>
 
         <div className="input-wrapper">
           <p>Card number</p>
-          <input
+          <WiXinput
             type="text"
             placeholder="Enter the card number"
             value={form.cardNumber}
-            onChange={(event) => updateField("cardNumber", event.target.value)}
+            onValueChange={(value) => updateField("cardNumber", value)}
+            icon="credit-card"
+            validate={(value) => value.trim().length > 0}
           />
         </div>
         <div className="input-wrapper">
           <p>Card PIN</p>
-          <input
+          <WiXinput
             type="password"
             placeholder="Enter the card PIN"
             value={form.pin}
-            onChange={(event) => updateField("pin", event.target.value)}
+            onValueChange={(value) => updateField("pin", value)}
+            icon="key"
+            validate={(value) => value.trim().length > 0}
           />
         </div>
         <div className="input-wrapper wrapper-grid">
           <div>
             <p>Card value</p>
-            <input
+            <WiXinput
               type="number"
               min="1"
               placeholder="Enter card value"
               value={form.value}
-              onChange={(event) => updateField("value", event.target.value)}
+              onValueChange={(value) => updateField("value", value)}
+              icon="hashtag"
+              validate={(value) => Number(value) >= 1}
             />
           </div>
           <div>
             <p>Selling price</p>
-            <input
+            <WiXinput
               type="number"
               min="1"
               placeholder="What is your price?"
               value={form.price}
-              onChange={(event) => updateField("price", event.target.value)}
+              onValueChange={(value) => updateField("price", value)}
+              icon="money-bill"
+              validate={(value) => Number(value) >= 1}
             />
           </div>
         </div>
         <div className="input-wrapper">
           <p>Discount (optional)</p>
-          <input
+          <WiXinput
             type="number"
             min="0"
             max="100"
             placeholder="Are you offering a discount percentage?"
             value={form.discountPercent}
-            onChange={(event) =>
-              updateField("discountPercent", event.target.value)
+            onValueChange={(value) => updateField("discountPercent", value)}
+            icon="percent"
+            required={false}
+            validate={(value) =>
+              value === "" || (Number(value) >= 0 && Number(value) <= 100)
             }
           />
           <small>{form.discountPercent || 0}%</small>

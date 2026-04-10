@@ -11,7 +11,7 @@ import GiftCardsHome from "./app/GiftCardsHome";
 import GiftCardMarket from "./app/GiftCardMarket";
 import CardDetails from "./app/CardDetails";
 import Checkout from "./app/Checkout";
-import NotFound from "./NotFound";
+import RouteError from "./RouteError";
 import ListNewCard from "./app/ListNewCard";
 import Menu from "./app/Menu";
 
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <NotFound />,
+    errorElement: <RouteError />,
     children: [
       {
         path: "/",

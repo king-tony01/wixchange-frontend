@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../auth/AuthContext";
+import { useAuthContext } from "../auth/AuthContext";
 import { ServicesIcons } from "../assets/icons/servicesIcons";
 function Services() {
-  const { PK } = useContext(AuthContext);
+  const { PK } = useAuthContext();
   const services = [
     {
       title: "VTU Services",

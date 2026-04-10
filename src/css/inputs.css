@@ -1,0 +1,155 @@
+.wix-select-shell {
+  position: relative;
+  border: 1px solid #707070;
+  border-radius: 0.5rem;
+  background: var(--card-dark);
+}
+
+.wix-select-shell.incorrect {
+  border-color: var(--danger);
+}
+
+.wix-select-label {
+  color: var(--light-white);
+}
+
+.wix-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  color: var(--light-white);
+  font-size: 1rem;
+  font-weight: 500;
+  background: none;
+  border-radius: inherit;
+}
+
+.wix-select-trigger .chevron{
+    width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.wix-select-trigger:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.wix-select-trigger-left {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+  text-align: left;
+}
+
+.wix-select-trigger-left .fas {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.wix-select-trigger-value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  line-height: 1.2;
+}
+
+.wix-select-trigger-value.placeholder {
+  color: var(--placeholder, var(--text));
+  font-weight: 500;
+}
+
+.wix-select-trigger-value.selected {
+  color: var(--light-white);
+}
+
+.wix-select-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: var(--card-dark);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.wix-select-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.wix-select-search input {
+  width: 100%;
+  background: none;
+  color: var(--light-white);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.wix-select-options {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.wix-select-option {
+  display: block;
+  width: 100%;
+  background: none;
+  color: var(--light-white);
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.wix-select-option.active {
+  background: rgba(216, 162, 94, 0.12);
+}
+
+.wix-select-option.disabled {
+  opacity: 0.45;
+}
+
+.wix-select-option-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wix-select-option-content strong {
+  color: var(--light-white);
+}
+
+.wix-select-option-content small {
+  color: var(--text);
+}
+
+.wix-select-empty,
+.wix-select-error {
+  padding: 10px 12px;
+  color: var(--text);
+}
+
+.wix-select-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--danger);
+}

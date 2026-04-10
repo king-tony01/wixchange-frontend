@@ -2,7 +2,8 @@
  * The base url of the WiXchange backend. All backend services are performed on this url.
  */
 //export const baseUrl = `https://wixchange-backend.onrender.com`;
-export const baseUrl = `http://localhost:3000`;
+export const baseUrl =
+  import.meta.env.VITE_API_BASE_URL || `http://localhost:3000`;
 // export const baseUrl = `http://192.168.101.27:3000`;
 
 const TEST_API_KEY = `8yGf4Ri3UeuwaA44LX1oo0000wDc`;

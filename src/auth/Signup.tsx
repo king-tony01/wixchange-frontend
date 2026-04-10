@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/auth.css";
-import { AuthContext } from "./AuthContext";
+import { useAuthContext } from "./AuthContext";
 import Spinner from "../Spinner";
 import ErrorModal from "../app/components/ErrorModal";
 import WiXinput from "../app/components/WiXinput";
@@ -10,18 +10,9 @@ import { useAuthForm } from "../hooks/useAuthForm";
 
 function Signup() {
   const [visible, setVisible] = useState(false);
-  const {
-    active,
-    tab,
-    user,
-    complete,
-    switchTab,
-    updatePassword,
-    updatePhone,
-    updateEmail,
-  } = useAuthForm();
+  const { user, complete, updatePassword, updateEmail } = useAuthForm();
 
-  const { sendForm, loading, info, setInfo } = useContext(AuthContext);
+  const { sendForm, loading, info, setInfo } = useAuthContext();
 
   return (
     <section className="auth">
@@ -36,23 +27,15 @@ function Signup() {
         />
       ) : null}
       <h1 className="auth-title">Sign Up</h1>
-      <div className="tabs">
-        {["Phone", "Email"].map((item, index) => (
-          <button
-            key={item}
-            className={index === active ? "active" : ""}
-            onClick={() => switchTab(index)}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
       <form action="">
         <WiXinput
-          tab={tab}
-          user={user}
-          updatePhone={updatePhone}
-          updateEmail={updateEmail}
+          type="email"
+          value={user.email}
+          onValueChange={updateEmail}
+          placeholder="Enter email address"
+          id="email"
+          name="email"
+          autoComplete="email"
         />
         <WiXPasswordInput
           user={user}

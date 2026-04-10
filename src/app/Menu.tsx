@@ -4,11 +4,11 @@ import { WiXcoin } from "../assets/icons/wixcoin";
 import { MenuIcons } from "../assets/icons/menuIcons";
 import Section from "./menu/sections/Section";
 import { HomeContext } from "../contexts/HomeContext";
-import { AuthContext } from "../auth/AuthContext";
+import { useAuthContext } from "../auth/AuthContext";
 
 function Menu() {
   const { userInfo } = useContext(HomeContext);
-  const { logout } = useContext(AuthContext);
+  const { logout } = useAuthContext();
   const [visible, setVisible] = useState(false);
 
   if (!userInfo) return null;
