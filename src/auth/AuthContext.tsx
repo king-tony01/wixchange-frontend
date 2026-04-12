@@ -9,6 +9,9 @@ import {
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { baseUrl } from "../assets/urls";
+
+export const PENDING_VERIFICATION_STORAGE_KEY = "wix_pending_verification";
+
 interface AuthInfoState {
   className: string;
   title: string;
@@ -23,6 +26,15 @@ interface AuthFormUser {
   password: string;
 }
 
+interface PendingVerificationState {
+  email?: string;
+  phone?: string;
+  verificationChannel?: "email" | "phone";
+  userId?: string;
+  username?: string;
+  target?: string;
+}
+
 interface AuthContextValue {
   loggedIn: boolean;
   authChecking: boolean;
@@ -31,6 +43,7 @@ interface AuthContextValue {
     user: AuthFormUser,
     endpoint: string,
   ) => Promise<void>;
+  completeAuthentication: (userData: any) => void;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
   PK: string;
@@ -72,6 +85,23 @@ function AuthProvider({ children }: { children: ReactNode }) {
   });
   const navigate = useNavigate();
   const location = useLocation();
+
+  const savePendingVerification = (data: PendingVerificationState): void => {
+    sessionStorage.setItem(
+      PENDING_VERIFICATION_STORAGE_KEY,
+      JSON.stringify(data),
+    );
+  };
+
+  const clearPendingVerification = (): void => {
+    sessionStorage.removeItem(PENDING_VERIFICATION_STORAGE_KEY);
+  };
+
+  const completeAuthentication = (userData: any): void => {
+    setUserData(userData);
+    setLoggedin(true);
+    clearPendingVerification();
+  };
 
   // Check if user is logged in by attempting to access a protected route
   useEffect(() => {
@@ -132,10 +162,30 @@ function AuthProvider({ children }: { children: ReactNode }) {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
+        if (endpoint.includes("/signup") && data.stat && data.user) {
+          const pendingVerification: PendingVerificationState = {
+            email: data.user.email || user.email,
+            phone: data.user.phone || user.phone,
+            verificationChannel: data.user.verificationChannel,
+            userId: data.user.id,
+            username: data.user.username,
+            target:
+              data.user.email || data.user.phone || user.email || user.phone,
+          };
+
+          savePendingVerification(pendingVerification);
+          setLoggedin(false);
+          setUserData(null);
+          setLoading(false);
+          navigate("/verify-contact", {
+            state: pendingVerification,
+          });
+          return;
+        }
+
         if (data.stat && data.user) {
           // Token is now stored in HttpOnly cookie automatically
-          setUserData(data.user);
-          setLoggedin(true);
+          completeAuthentication(data.user);
           setLoading(false);
           navigate("/");
         } else {
@@ -150,6 +200,28 @@ function AuthProvider({ children }: { children: ReactNode }) {
         }
       } else {
         const resData = await response.json();
+        if (response.status === 403 && resData?.user) {
+          const pendingVerification: PendingVerificationState = {
+            email: resData.user.email || user.email,
+            phone: resData.user.phone || user.phone,
+            verificationChannel: resData.user.verificationChannel,
+            userId: resData.user.id,
+            username: resData.user.username,
+            target:
+              resData.user.email ||
+              resData.user.phone ||
+              user.email ||
+              user.phone,
+          };
+
+          savePendingVerification(pendingVerification);
+          setLoading(false);
+          navigate("/verify-contact", {
+            state: pendingVerification,
+          });
+          return;
+        }
+
         if (response.status === 404) {
           setInfo({
             className: "error",
@@ -198,7 +270,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const isPublicRoute =
-      location.pathname === "/login" || location.pathname === "/signup";
+      location.pathname === "/login" ||
+      location.pathname === "/signup" ||
+      location.pathname === "/verify-contact";
 
     if (!loggedIn && !isPublicRoute) {
       navigate("/login");
@@ -211,6 +285,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         loggedIn,
         authChecking,
         sendForm,
+        completeAuthentication,
         loading,
         setLoading,
         PK,

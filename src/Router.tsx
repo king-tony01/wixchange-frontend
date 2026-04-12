@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
+import VerifyContact from "./auth/VerifyContact";
 import Home from "./app/Home";
 import HomeTab from "./app/HomeTab";
 import WalletTab from "./app/WalletTab";
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
+      },
+      {
+        path: "/verify-contact",
+        element: <VerifyContact />,
       },
       {
         path: "/services/vtu",

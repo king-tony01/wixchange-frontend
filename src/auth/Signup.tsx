@@ -27,22 +27,38 @@ function Signup() {
         />
       ) : null}
       <h1 className="auth-title">Sign Up</h1>
+      <small
+        className="small-text"
+        style={{
+          display: "block",
+          marginBottom: "14px",
+          lineHeight: 1.5,
+        }}
+      >
+        We&apos;ll send a verification code to your email after signup. Verify
+        it to activate your account.
+      </small>
       <form action="">
-        <WiXinput
-          type="email"
-          value={user.email}
-          onValueChange={updateEmail}
-          placeholder="Enter email address"
-          id="email"
-          name="email"
-          autoComplete="email"
-        />
-        <WiXPasswordInput
-          user={user}
-          updatePassword={updatePassword}
-          visible={visible}
-          setVisible={setVisible}
-        />
+        <div className="input-wrapper">
+          <WiXinput
+            type="email"
+            value={user.email}
+            onValueChange={updateEmail}
+            placeholder="Enter email address"
+            id="email"
+            name="email"
+            autoComplete="email"
+          />
+        </div>
+        <div className="input-wrapper">
+          <WiXPasswordInput
+            user={user}
+            updatePassword={updatePassword}
+            visible={visible}
+            setVisible={setVisible}
+          />
+        </div>
+
         <small className="small-text">
           Already have an account? <Link to={"/login"}>Login now</Link>
         </small>
